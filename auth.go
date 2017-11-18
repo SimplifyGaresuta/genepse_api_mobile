@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"strings"
 
+	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/objx"
 )
@@ -36,10 +36,9 @@ func MustAuth(handler http.Handler) http.Handler {
 }
 
 // loginHandler handles the third-party login process.
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	segs := strings.Split(r.URL.Path, "/")
-	action := segs[2]
-	provider := segs[3]
+func loginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	action := ps.ByName("action")
+	provider := ps.ByName("provider")
 	switch action {
 	case "login":
 
