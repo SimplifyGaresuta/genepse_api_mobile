@@ -18,8 +18,9 @@ func main() {
 	router := httprouter.New()
 	router.GET("/v1/auth/:action/:provider", loginHandler)
 	router.GET("/v1/users", userList)
+	router.POST("/v1/users", userCreate)
 	router.GET("/v1/users/:id", userDetail)
-	router.PATCH("/v1/users/:id", profileUpdate)
+	router.PATCH("/v1/users/:id", userUpdate)
 
 	// start the web server
 	log.Println("Starting web server on :8080")

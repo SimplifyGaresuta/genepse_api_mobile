@@ -12,7 +12,7 @@ type user struct {
 	facebookID string
 }
 
-func profileUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
 
@@ -21,5 +21,9 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func userCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
