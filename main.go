@@ -19,6 +19,7 @@ func main() {
 	)
 
 	http.HandleFunc("/auth/", loginHandler)
+	http.HandleFunc("/user/update/", profileUpdate)
 
 	// start the web server
 	log.Println("Starting web server on :8080")
