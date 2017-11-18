@@ -5,7 +5,7 @@
   "category": "Engineer",
   "skills": ["ruby","go","unity"],
   "overview": "これまでに複数インターンで頑張りました",
-  "Awards": ["AdTech Charenge 優勝", "CrossOverGameJam 優勝", "ジロッカソン terateil賞"],
+  "awards": ["AdTech Charenge 優勝", "CrossOverGameJam 優勝", "ジロッカソン terateil賞"],
   "products": [
                 {"title": "リア充無双", "url": "https://appsto.re/jp/26J0gb.i","image":"https://storage.googleapis.com/bucket_name/name_a"},
                 {"title": "Webクローラー", "url": "https://github.com/ryonakao/netsurfer","image":"https://storage.googleapis.com/bucket_name/name_b"}

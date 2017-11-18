@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "中尾涼",
+    "avatar_url": "https://storage.googleapis.com/bucket_name/name_a",
+    "category": "Engineer",
+    "skills": ["ruby","go","unity"],
+    "overview": "これまでに複数インターンで頑張りました...",
+  },
+  {
+    "id": 2,
+    "name": "岩見建汰",
+    "avatar_url": "https://storage.googleapis.com/bucket_name/name_b",
+    "category": "Engineer",
+    "skills": ["python","自然言語処理","swift"],
+    "overview": "研究では自然言語処理を行っています。インターンでは...",
+  }
+]
