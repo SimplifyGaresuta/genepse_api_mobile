@@ -6,12 +6,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type user struct {
-	name       string
-	avatarURL  string
-	facebookID string
-}
-
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }

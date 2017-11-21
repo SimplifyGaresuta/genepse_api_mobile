@@ -16,7 +16,7 @@ func main() {
 		facebook.New("300123313807716", "276dd1a14df05c304b0ebb3cc66a4c59", "http://localhost:8080/auth/callback/facebook"),
 	)
 	router := httprouter.New()
-	router.GET("/v1/auth/:action/:provider", loginHandler)
+	router.GET("/v1/auth/:action/:provider", auth.loginHandler)
 	router.GET("/v1/users", userList)
 	router.POST("/v1/users", userCreate)
 	router.GET("/v1/users/:id", userDetail)
