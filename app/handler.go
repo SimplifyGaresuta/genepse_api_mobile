@@ -11,7 +11,7 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
+	w.Write("userList")
 }
 
 func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

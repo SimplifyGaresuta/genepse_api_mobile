@@ -68,7 +68,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		// TODO ここでフィード画面に遷移させる
 		// TODO realmにログイン状態を保存
 		// TODO ユーザー名とidと画像をストレージに保存する
-		w.Header().Set("Location", "/chat")
+		w.Header().Set("Location", "/v1/users")
 		w.WriteHeader(http.StatusTemporaryRedirect)
 
 	default:
