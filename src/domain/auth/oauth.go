@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/objx"
 )
 
-// loginHandler handles the third-party login process.
-func loginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+// LoginHandler handles the third-party login process.
+func LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	action := ps.ByName("action")
 	provider := ps.ByName("provider")
 	switch action {
