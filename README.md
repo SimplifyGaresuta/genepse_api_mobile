@@ -16,5 +16,11 @@ $ go get github.com/SimplifyGaresuta/genepse_api_mobile
 ### ユーザー登録
 
 ```
-$ curl -H 'Content-Type:application/json' -H 'User-Agent:iPhone' http://localhost:8080/users -d @samples/request/user_create.json
+$ curl -H 'Content-Type:application/json' -H 'User-Agent:iPhone' http://localhost:8080/users -d @samples/requests/user_create.json
+```
+
+### 複数ユーザー取得
+
+```
+$ curl -H 'User-Agent:iPhone' http://localhost:8080/users?per_page=20&page=1
 ```
