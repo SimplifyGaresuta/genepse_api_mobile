@@ -1,7 +1,11 @@
 package entity
 
-type user struct {
+type User struct {
 	name       string
 	avatarURL  string
 	facebookID string
+}
+
+func Hey() string {
+	return "Hey"
 }
