@@ -11,7 +11,21 @@ $ go get github.com/SimplifyGaresuta/genepse_api_mobile
 
 [APIドキュメント](https://docs.google.com/spreadsheets/d/1-q8nE-WqRuiR_29qE8KX-_7tY1fdgvvmYsHC2DYsNOg/edit#gid=0)を御覧ください。
 
-# How to deploy
+# How to deploy to Google App Engine
+
+gcloudアカウントの認証を行います。
+
+```
+$ gcloud auth login
+```
+
+プロジェクトidをローカルに設定します。
+
+```
+$ gcloud config set project [YOUR_PROJECT_ID]
+```
+
+app.yamlがあるディレクトリに移動し、デプロイします。
 
 ```
 $ cd [THIS_PROJECT]/app
