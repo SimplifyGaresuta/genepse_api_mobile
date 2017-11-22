@@ -1,10 +1,9 @@
 package main
 
 import (
+	"genepse_api/src/domain/auth"
 	"log"
 	"net/http"
-
-	"github.com/SimplifyGaresuta/genepse_api_mobile/src/domain/auth"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
