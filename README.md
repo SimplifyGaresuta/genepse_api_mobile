@@ -11,6 +11,13 @@ $ go get github.com/SimplifyGaresuta/genepse_api_mobile
 
 [APIドキュメント](https://docs.google.com/spreadsheets/d/1-q8nE-WqRuiR_29qE8KX-_7tY1fdgvvmYsHC2DYsNOg/edit#gid=0)を御覧ください。
 
+# How to deploy
+
+```
+$ cd [THIS_PROJECT]/app
+$ gcloud app deploy
+```
+
 # How to test request
 
 ### ユーザー登録
