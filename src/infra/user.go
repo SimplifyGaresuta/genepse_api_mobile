@@ -1,4 +1,4 @@
-package entity
+package infra
 
 type User struct {
 	name       string
@@ -6,6 +6,6 @@ type User struct {
 	facebookID string
 }
 
-func Hey() string {
-	return "Hey"
+func (u *User) Find(id int) *User {
+	return &User{}
 }

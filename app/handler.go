@@ -1,9 +1,8 @@
 package main
 
 import (
+	"genepse_api/src/domain/entity"
 	"net/http"
-
-	"genepse_api/src/repository/entity"
 
 	"github.com/julienschmidt/httprouter"
 )
