@@ -1,4 +1,4 @@
-package or_mapper
+package orm
 
 import (
 	"github.com/jinzhu/gorm"

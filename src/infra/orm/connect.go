@@ -1,4 +1,4 @@
-package or_mapper
+package orm
 
 import (
 	"genepse_api/src/infra/config"
