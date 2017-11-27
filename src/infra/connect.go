@@ -7,9 +7,7 @@ import (
 
 var db *gorm.DB
 
-func openMysql() (err error) {
-	db, err = gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-
+func OpenMysql() (err error) {
 	db, err = gorm.Open("mysql", user+":"+pass+"@/"+dbName+"?charset="+charset+"&parseTime="+parseTime+"&loc="+loc)
-
+	return
 }
