@@ -13,3 +13,6 @@ func OpenMysql() (err error) {
 	db, err = gorm.Open("mysql", config.UserName+":"+config.Pass+"@/"+config.DbName+"?charset="+config.Charset+"&parseTime="+config.ParseTime+"&loc="+config.Loc)
 	return
 }
+func CloseMysql() {
+	db.Close()
+}
