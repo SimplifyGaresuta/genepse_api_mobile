@@ -1,7 +1,7 @@
-package domain
+package entity
 
 type User interface {
-	All() *[]User
+	Update() bool
 }
 
 func Hey() string {

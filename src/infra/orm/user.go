@@ -6,8 +6,8 @@ import (
 
 type User struct {
 	gorm.Model
-	name      string
-	avatarURL string
+	Name      string `gorm:"size:20;not null"`
+	AvatarUrl string `gorm:"size:300"`
 }
 
 func FindUser(id int) *User {
