@@ -1,1 +1,3 @@
-src/infra/config/mysql.yaml
+/src/infra/config/mysql.yaml
+*.swp
+/app/app

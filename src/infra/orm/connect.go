@@ -11,8 +11,11 @@ import (
 var db *gorm.DB
 
 func OpenMysql() (err error) {
-	viper.SetConfigName("config")
-	db, err = gorm.Open("mysql", config.UserName+":"+config.Pass+"@/"+config.DbName+"?charset="+config.Charset+"&parseTime="+config.ParseTime+"&loc="+config.Loc)
+	err = config.Read("mysql")
+	if err != nil {
+		return
+	}
+	db, err = gorm.Open("mysql", viper.GetString("user_name")+":"+viper.GetString("pass")+"@/"+viper.GetString("db_name")+"?charset="+viper.GetString("charset")+"&parseTime="+viper.GetString("parseTime")+"&loc="+viper.GetString("loc"))
 	return
 }
 func CloseMysql() {
