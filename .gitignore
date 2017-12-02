@@ -1,4 +1,5 @@
 /src/infra/config/mysql.yaml
+/src/infra/config/mysql.go
 *.swp
 /app/genepse
 /app/config.go

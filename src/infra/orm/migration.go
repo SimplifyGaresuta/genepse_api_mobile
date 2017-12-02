@@ -1,13 +1,10 @@
 package orm
 
-import "log"
-
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	err := OpenMysql()
-	if err != nil {
-		log.Println(err)
+	if !db.HasTable(&User{}) {
+		if err := db.CreateTable(&User{}).Error; err != nil {
+			panic(err)
+		}
 	}
-	defer CloseMysql()
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 }
