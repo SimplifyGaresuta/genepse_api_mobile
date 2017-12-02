@@ -3,6 +3,7 @@ package middleware
 
 import (
 	"fmt"
+	"genepse_api/src/infra/orm"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -77,6 +78,19 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		fmt.Fprintf(w, "Auth action %s not supported", action)
 	}
 }
-func registered(id string) bool {
 
+// TODO レコード毎とらずに、存在確認のみする
+// TODO プロバイダー毎に処理書かずに抽象化したい
+func registered(provider string, id string) bool {
+	switch provider {
+	case "facebook":
+		account, _ := orm.FindFacebookBy("AccountId", id)
+		if account == nil {
+			return false
+		} else {
+			return true
+		}
+	default:
+		return false
+	}
 }

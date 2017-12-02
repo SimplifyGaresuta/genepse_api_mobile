@@ -1,3 +1,4 @@
+// TODO アソシエーションしっかり
 package orm
 
 import (
