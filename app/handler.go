@@ -51,6 +51,7 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Write(res)
 }
 
+// TODO gomniauth使用はmiddlewareに任せる
 func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
 	provider, err := gomniauth.Provider(providerName)
