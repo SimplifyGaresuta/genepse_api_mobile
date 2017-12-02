@@ -6,6 +6,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 

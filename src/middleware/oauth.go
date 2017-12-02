@@ -1,3 +1,4 @@
+// TODO http系はhandlerに任せる
 package middleware
 
 import (
@@ -75,4 +76,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) 
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "Auth action %s not supported", action)
 	}
+}
+func registered(id string) bool {
+
 }

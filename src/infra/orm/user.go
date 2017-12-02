@@ -17,7 +17,7 @@ type User struct {
 	Address           string `gorm:"size:100"`
 	SchoolCarrer      string `gorm:"size:500"`
 	FacebookAccountId string `gorm:"size:100"`
-	DeleteFlg         int    `gorm:"type:tinyint"`
+	DeleteFlg         int    `gorm:"type:tinyint;default:0;not null"`
 }
 
 // FindUser find user matching the given id
