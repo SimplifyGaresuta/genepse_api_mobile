@@ -5,7 +5,6 @@ import (
 	"genepse_api/src/middleware"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
@@ -13,7 +12,6 @@ import (
 )
 
 func main() {
-	//orm.Setup()
 	err := orm.OpenMysql()
 	if err != nil {
 		log.Fatal(err)
@@ -22,7 +20,7 @@ func main() {
 	orm.Setup()
 	//	user := orm.FindUser(1)
 	//	log.Println(*user)
-	os.Exit(0)
+	//	os.Exit(0)
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
 	gomniauth.SetSecurityKey(globalSecret)
 	gomniauth.WithProviders(
