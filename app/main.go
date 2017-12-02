@@ -2,7 +2,6 @@ package main
 
 import (
 	"genepse_api/src/infra/orm"
-	"genepse_api/src/middleware"
 	"log"
 	"net/http"
 
@@ -18,6 +17,7 @@ func main() {
 	}
 	defer orm.CloseMysql()
 	orm.Setup()
+
 	//	user := orm.FindUser(1)
 	//	log.Println(*user)
 	//	os.Exit(0)
@@ -27,7 +27,8 @@ func main() {
 		facebook.New(facebookClient, clientSecret, "http://localhost:8080/auth/callback/facebook"),
 	)
 	router := httprouter.New()
-	router.GET("/v1/auth/:action/:provider", middleware.LoginHandler)
+	router.GET("/v1/login_url/:provider", login)
+	router.GET("/v1/callback/:provider", callback)
 	router.GET("/v1/users", userList)
 	router.POST("/v1/users", userCreate)
 	router.GET("/v1/users/:id", userDetail)

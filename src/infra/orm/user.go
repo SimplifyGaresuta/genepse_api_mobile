@@ -27,3 +27,7 @@ func FindUser(id int) *User {
 	db.First(&user, id)
 	return &user
 }
+
+func (u *User) Insert() {
+	db.Create(u)
+}

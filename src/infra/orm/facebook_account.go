@@ -27,3 +27,7 @@ func FindFacebookBy(column string, value interface{}) (*FacebookAccount, error) 
 		return nil, errors.New("カラム名が違います。")
 	}
 }
+
+func (f *FacebookAccount) Insert() {
+	db.Create(f)
+}
