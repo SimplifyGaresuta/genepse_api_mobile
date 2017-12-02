@@ -32,6 +32,14 @@ $ cd [THIS_PROJECT]/app
 $ gcloud app deploy
 ```
 
+# How to Connect to CloudSQL
+
+Google Cloud Platform Console で、右上隅にある Cloud Shell アイコンをクリックします。
+
+```
+gcloud beta sql connect genepse --user=root
+```
+
 # How to test request
 
 ### ユーザー登録
