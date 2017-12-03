@@ -1,6 +1,9 @@
 package feed
 
-import "genepse_api/src/infra/orm"
+import (
+	"fmt"
+	"genepse_api/src/infra/orm"
+)
 
 type Users []User
 
@@ -16,7 +19,7 @@ type User struct {
 // nextExist return 与えられたidの次にレコードがあるか
 func nextExist(id int) bool {
 	user := orm.User{}
-	user.Find(id)
+	user.Find(id + 1)
 	return user.Model.ID != 0
 }
 
@@ -26,8 +29,9 @@ func skillsOfUser(userID uint) (skillNames []string, err error) {
 	if err = skillUsers.Where("user_id = ?", userID); err != nil {
 		return
 	}
-	skill := &orm.Skill{}
+	fmt.Println("スキルユーザー", skillUsers)
 	for _, s := range *skillUsers {
+		skill := &orm.Skill{}
 		if err := skill.Find(int(s.SkillId)); err != nil {
 			break
 		}
