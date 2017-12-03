@@ -13,12 +13,12 @@ type FacebookAccount struct {
 	DeleteFlg int    `gorm:"type:tinyint;default:0;not null"`
 }
 
-func (f *FacebookAccount) Insert() error {
-	d := db.Create(f)
-	err := d.Error
-	return err
+func (f *FacebookAccount) Insert() (err error) {
+	err = db.Create(f).Error
+	return
 }
 
+// TODO メソッドにする
 func FindFacebookBy(column string, value interface{}) (*FacebookAccount, error) {
 	facebook := FacebookAccount{}
 	switch column {
@@ -34,6 +34,7 @@ func FindFacebookBy(column string, value interface{}) (*FacebookAccount, error) 
 	}
 }
 
+// TODO メソッドにする
 func ExistsFacebookBy(column string, value interface{}) (bool, error) {
 	facebook := FacebookAccount{}
 	switch column {

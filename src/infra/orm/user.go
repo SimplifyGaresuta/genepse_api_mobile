@@ -24,10 +24,9 @@ type User struct {
 	DeleteFlg         int    `gorm:"type:tinyint;default:0;not null"`
 }
 
-func (u *User) Insert() error {
-	d := db.Create(u)
-	err := d.Error
-	return err
+func (u *User) Insert() (err error) {
+	err = db.Create(u).Error
+	return
 }
 
 // FindUser find user matching the given id
@@ -36,6 +35,7 @@ func (u *User) Find(id int) {
 	return
 }
 
+// TODO メソッドにする
 func FindUserBy(column string, value interface{}) (*User, error) {
 	user := User{}
 	switch column {
@@ -53,13 +53,7 @@ func FindUserBy(column string, value interface{}) (*User, error) {
 
 type Users []User
 
-func (u *Users) LimitOffset(limit int, offset int) {
-	db.Limit(limit).Offset(offset).Find(u)
+func (u *Users) LimitOffset(limit int, offset int) (err error) {
+	err = db.Limit(limit).Offset(offset).Find(u).Error
 	return
 }
-
-/*
-func WhereUser(query string, args ...interface{}) {
-	users := []User{}
-	db.Where(query, args[0]).Find(&users)
-}*/
