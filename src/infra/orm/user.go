@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// TODO アソシエーションしっかり
 type User struct {
 	gorm.Model
 	Name              string `gorm:"size:20;not null"`
