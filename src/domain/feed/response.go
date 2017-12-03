@@ -1,6 +1,9 @@
 package feed
 
-import "genepse_api/src/infra/orm"
+import (
+	"errors"
+	"genepse_api/src/infra/orm"
+)
 
 // Response is フィードで返すjsonオブジェクト
 type Response struct {
@@ -12,6 +15,10 @@ type Response struct {
 func GetResponse(limit int, offset int) (response *Response, err error) {
 	rawUsers := orm.Users{}
 	if err = rawUsers.LimitOffset(limit, offset); err != nil {
+		return
+	}
+	if len(rawUsers) < 1 {
+		err = errors.New("指定条件のユーザーは存在しません。")
 		return
 	}
 
@@ -32,6 +39,7 @@ func GetResponse(limit int, offset int) (response *Response, err error) {
 	}
 
 	lastID := rawUsers[len(rawUsers)-1].Model.ID
+
 	response = &Response{
 		HasNext: nextExist(int(lastID)),
 		Users:   users,

@@ -12,7 +12,7 @@ type User struct {
 	gorm.Model
 	Name              string `gorm:"size:20;not null"`
 	AvatarUrl         string `gorm:"size:300"`
-	AttributeId       uint   `gorm:"type:smallint;not null"`
+	AttributeId       uint   `gorm:"type:smallint;default:1;not null"`
 	Overview          string `gorm:"size:500"`
 	Awards            string `gorm:"size:500"`
 	License           string `gorm:"size:500"`

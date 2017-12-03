@@ -2,7 +2,7 @@ package orm
 
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	//db.DropTable(&User{}, &FacebookAccount{})
+	//db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{})
 	if !db.HasTable(&User{}) {
 		if err := db.CreateTable(&User{}).Error; err != nil {
 			panic(err)

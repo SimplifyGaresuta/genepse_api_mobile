@@ -17,6 +17,7 @@ import (
 
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	query := r.URL.Query()
+	fmt.Println("url:", r.URL)
 	limit, err := strconv.Atoi(query["limit"][0])
 	offset, err := strconv.Atoi(query["offset"][0])
 	if err != nil {
@@ -24,7 +25,14 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		// TODO 異常系のjson
 		return
 	}
+	fmt.Println("hey")
 	response, err := feed.GetResponse(limit, offset)
+	if err != nil {
+		log.Println("フィード取得時にエラー", err)
+		// TODO 異常系のjson返す
+		return
+	}
+	fmt.Println("レスポンス完了")
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	res, err := json.Marshal(response)
 	if err != nil {
