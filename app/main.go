@@ -24,7 +24,7 @@ func main() {
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
 	gomniauth.SetSecurityKey(globalSecret)
 	gomniauth.WithProviders(
-		facebook.New(facebookClient, clientSecret, "http://localhost:8080/auth/callback/facebook"),
+		facebook.New(facebookClient, clientSecret, "http://localhost:8080/v1/callback/facebook"),
 	)
 	router := httprouter.New()
 	router.GET("/v1/login_url/:provider", login)

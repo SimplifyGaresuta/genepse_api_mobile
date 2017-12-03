@@ -2,38 +2,52 @@ package registration
 
 import "genepse_api/src/infra/orm"
 
+type Login struct {
+	LoginURL string `json:"login_url"`
+}
+
+type Callback struct {
+	UserID uint `json:"user_id"`
+}
+
 // TODO レコード毎とらずに、存在確認のみする
 // TODO プロバイダー毎に処理書かずに抽象化したい
-func Registered(provider string, id string) bool {
+func Registered(provider string, accountID string) bool {
 	switch provider {
 	case "facebook":
-		account, _ := orm.FindFacebookBy("AccountId", id)
-		if account == nil {
-			return false
-		} else {
-			return true
-		}
+		exists, _ := orm.ExistsFacebookBy("AccountId", accountID)
+		return exists
 	default:
+		// TODO エラーハンドリングする
 		return false
 	}
 }
 
-// Register register user
-func Register(userName string, avatarURL string, accountID string, provider string) (userID uint) {
+// Register はuserを登録します
+func Register(userName string, avatarURL string, accountID string, provider string) (userID uint, err error) {
+	var facebookID uint
 	// TODO 抽象化
 	switch provider {
 	case "facebook":
 		f := &orm.FacebookAccount{
 			AccountId: accountID,
 		}
-		f.Insert()
+		err = f.Insert()
+		if err != nil {
+			return
+		}
+		facebookID = f.Model.ID
 	}
 	// TODO 画像をcloudStorageに入れて、AvatarUrlにそのurl入れる
 	u := &orm.User{
-		Name:      userName,
-		AvatarUrl: avatarURL,
+		Name:              userName,
+		AvatarUrl:         avatarURL,
+		FacebookAccountId: facebookID,
 	}
-	u.Insert()
+	err = u.Insert()
+	if err != nil {
+		return
+	}
 	userID = u.Model.ID
 	return
 }

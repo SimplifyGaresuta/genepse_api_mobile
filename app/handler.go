@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"genepse_api/src/domain/registration"
+	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
-	"github.com/stretchr/objx"
 )
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -42,44 +42,48 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	res, err := json.Marshal(middleware.Login{
+	res, err := json.Marshal(registration.Login{
 		LoginURL: loginURL,
 	})
 	if err != nil {
 		log.Println(err)
 	}
+	fmt.Println("ログインURL", loginURL)
 	w.Write(res)
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
 func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
-	provider, err := gomniauth.Provider(providerName)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error when trying to get provider %s: %s", provider, err), http.StatusBadRequest)
-		return
-	}
-
-	creds, err := provider.CompleteAuth(objx.MustFromURLQuery(r.URL.RawQuery))
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error when trying to complete auth for %s: %s", provider, err), http.StatusInternalServerError)
-		return
-	}
-
-	// プロバイダーからユーザー情報を取得
-	user, err := provider.GetUser(creds)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error when trying to get user from %s: %s", provider, err), http.StatusInternalServerError)
-		return
-	}
-
+	user, err := middleware.GetUser(providerName, r.URL.RawQuery)
 	accountID := user.IDForProvider(providerName)
 	var userID uint
+
 	if !registration.Registered(providerName, accountID) {
-		userID = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
+		fmt.Println("へい")
+		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// TODO 抽象化
+		switch providerName {
+		case "facebook":
+			fb, err := orm.FindFacebookBy("AccountId", accountID)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
+			}
+			u, err := orm.FindUserBy("FacebookAccountId", fb.Model.ID)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
+			}
+			userID = u.Model.ID
+		}
 	}
+
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	res, err := json.Marshal(middleware.Callback{
+	res, err := json.Marshal(registration.Callback{
 		UserID: userID,
 	})
 	if err != nil {
