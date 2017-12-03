@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"genepse_api/src/domain/feed"
 	"genepse_api/src/domain/registration"
 	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
@@ -13,18 +14,23 @@ import (
 	"github.com/stretchr/gomniauth"
 )
 
-func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-}
-
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	response := feed.GetResponse()
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	res, err := json.Marshal(response)
+	if err != nil {
+		log.Println("フィード取得時にエラー", err)
+		// TODO 異常系のjson返す
+		return
+	}
+	w.Write(res)
 }
 
 func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
 
-func userCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
+func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 // TODO gomniauth使用はmiddlewareに任せる

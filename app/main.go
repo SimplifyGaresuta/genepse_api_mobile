@@ -30,7 +30,6 @@ func main() {
 	router.GET("/v1/login_url/:provider", login)
 	router.GET("/v1/callback/:provider", callback)
 	router.GET("/v1/users", userList)
-	router.POST("/v1/users", userCreate)
 	router.GET("/v1/users/:id", userDetail)
 	router.PATCH("/v1/users/:id", userUpdate)
 
