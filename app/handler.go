@@ -9,13 +9,22 @@ import (
 	"genepse_api/src/middleware"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
 )
 
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	response := feed.GetResponse()
+	query := r.URL.Query()
+	limit, err := strconv.Atoi(query["limit"][0])
+	offset, err := strconv.Atoi(query["offset"][0])
+	if err != nil {
+		log.Println("クエリパラメータが不正です", err)
+		// TODO 異常系のjson
+		return
+	}
+	response, err := feed.GetResponse(limit, offset)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	res, err := json.Marshal(response)
 	if err != nil {
@@ -59,6 +68,7 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
+// TODO 登録周りはdomainに任せる
 func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
 	user, err := middleware.GetUser(providerName, r.URL.RawQuery)
@@ -66,7 +76,6 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var userID uint
 
 	if !registration.Registered(providerName, accountID) {
-		fmt.Println("へい")
 		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)

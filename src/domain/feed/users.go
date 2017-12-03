@@ -2,6 +2,7 @@ package feed
 
 import "genepse_api/src/infra/orm"
 
+// Response is フィードで返すjsonオブジェクト
 type Response struct {
 	HasNext bool  `json:"has_next"`
 	Users   Users `json:"users"`
@@ -9,6 +10,7 @@ type Response struct {
 
 type Users []User
 
+// Uses is 画面で表示するユーザー情報
 type User struct {
 	ID        uint     `json:"id"`
 	Name      string   `json:"name"`
@@ -48,6 +50,7 @@ func GetResponse(limit int, offset int) (response *Response, err error) {
 	return
 }
 
+// nextExist return 与えられたidの次にレコードがあるか
 func nextExist(id int) bool {
 	user := orm.User{}
 	user.Find(id)
