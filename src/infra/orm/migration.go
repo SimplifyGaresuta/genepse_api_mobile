@@ -13,5 +13,14 @@ func Setup() {
 			panic(err)
 		}
 	}
-
+	if !db.HasTable(&Skill{}) {
+		if err := db.CreateTable(&Skill{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !db.HasTable(&SkillUser{}) {
+		if err := db.CreateTable(&SkillUser{}).Error; err != nil {
+			panic(err)
+		}
+	}
 }
