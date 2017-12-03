@@ -7,4 +7,10 @@ func Setup() {
 			panic(err)
 		}
 	}
+	if !db.HasTable(&FacebookAccount{}) {
+		if err := db.CreateTable(&FacebookAccount{}).Error; err != nil {
+			panic(err)
+		}
+	}
+
 }

@@ -34,7 +34,6 @@ func main() {
 	router.GET("/v1/users/:id", userDetail)
 	router.PATCH("/v1/users/:id", userUpdate)
 
-	// start the web server
-	log.Println("Starting web server on :8080")
+	log.Println("Start!! on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
