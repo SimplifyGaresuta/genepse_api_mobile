@@ -3,6 +3,7 @@ package orm
 import (
 	"fmt"
 	"genepse_api/src/infra/config"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -23,6 +24,5 @@ func CloseMysql() {
 }
 
 func isDevelop() bool {
-	return false
-	//return os.Getenv("DEV") == "1"
+	return os.Getenv("DEV") == "1"
 }

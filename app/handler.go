@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"genepse_api/src/infra/orm"
+	"genepse_api/src/domain/registration"
 	"genepse_api/src/middleware"
 	"log"
 	"net/http"
@@ -72,26 +72,11 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, fmt.Sprintf("Error when trying to get user from %s: %s", provider, err), http.StatusInternalServerError)
 		return
 	}
+
 	accountID := user.IDForProvider(providerName)
 	var userID uint
-	if !registered(providerName, accountID) {
-		// TODO 抽象化
-		switch providerName {
-		case "facebook":
-			f := &orm.FacebookAccount{
-				AccountId: accountID,
-			}
-			f.Insert()
-		default:
-			return
-		}
-		// TODO 画像をcloudStorageに入れて、AvatarUrlにそのurl入れる
-		u := &orm.User{
-			Name:      user.Name(),
-			AvatarUrl: user.AvatarURL(),
-		}
-		u.Insert()
-		userID = u.Model.ID
+	if !registration.Registered(providerName, accountID) {
+		userID = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	res, err := json.Marshal(middleware.Callback{
@@ -101,20 +86,4 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		log.Println(err)
 	}
 	w.Write(res)
-}
-
-// TODO レコード毎とらずに、存在確認のみする
-// TODO プロバイダー毎に処理書かずに抽象化したい
-func registered(provider string, id string) bool {
-	switch provider {
-	case "facebook":
-		account, _ := orm.FindFacebookBy("AccountId", id)
-		if account == nil {
-			return false
-		} else {
-			return true
-		}
-	default:
-		return false
-	}
 }
