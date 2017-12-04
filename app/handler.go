@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"genepse_api/src/domain/detail"
 	"genepse_api/src/domain/feed"
 	"genepse_api/src/domain/registration"
 	"genepse_api/src/infra/orm"
@@ -14,6 +15,18 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
 )
+
+type Response interface{}
+
+func returnJson(w http.ResponseWriter, res Response) error {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	r, err := json.Marshal(res)
+	if err != nil {
+		return err
+	}
+	w.Write(r)
+	return nil
+}
 
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	query := r.URL.Query()
@@ -30,18 +43,23 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		// TODO 異常系のjson返す
 		return
 	}
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	res, err := json.Marshal(response)
-	if err != nil {
-		log.Println("フィード取得時にエラー", err)
-		// TODO 異常系のjson返す
-		return
-	}
-	w.Write(res)
+	returnJson(w, response)
 }
 
 func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
+	id, err := strconv.Atoi(ps.ByName("id"))
+	if err != nil {
+		log.Println("idが不正です。")
+		// TODO 異常系json
+		return
+	}
+	user, err := detail.GetUser(uint(id))
+	if err != nil {
+		log.Println("プロフィール取得時にエラー", err)
+		// TODO 異常系json
+		return
+	}
+	returnJson(w, user)
 }
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -61,15 +79,11 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		http.Error(w, fmt.Sprintf("Error when trying to GetBeginAuthURL for %s: %s", provider, err), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	res, err := json.Marshal(registration.Login{
+	res := registration.Login{
 		LoginURL: loginURL,
-	})
-	if err != nil {
-		log.Println(err)
 	}
 	fmt.Println("ログインURL", loginURL)
-	w.Write(res)
+	returnJson(w, res)
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
@@ -100,13 +114,8 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			return
 		}
 	}
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	res, err := json.Marshal(registration.Callback{
+	res := registration.Callback{
 		UserID: userID,
-	})
-	if err != nil {
-		log.Println(err)
 	}
-	w.Write(res)
+	returnJson(w, res)
 }
