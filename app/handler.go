@@ -53,7 +53,7 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		// TODO 異常系json
 		return
 	}
-	user, err := detail.GetUser(uint(id))
+	user, err := detail.GetUser(id)
 	if err != nil {
 		log.Println("プロフィール取得時にエラー", err)
 		// TODO 異常系json

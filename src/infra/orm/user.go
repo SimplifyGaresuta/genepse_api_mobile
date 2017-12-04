@@ -12,7 +12,7 @@ type User struct {
 	gorm.Model
 	Name              string `gorm:"size:20;not null"`
 	AvatarUrl         string `gorm:"size:300"`
-	AttributeId       uint   `gorm:"type:smallint;default:1;not null"`
+	AttributeId       int    `gorm:"type:smallint;default:1;not null"`
 	Overview          string `gorm:"size:500"`
 	Awards            string `gorm:"size:500"`
 	License           string `gorm:"size:500"`
@@ -31,8 +31,7 @@ func (u *User) Insert() (err error) {
 
 // FindUser find user matching the given id
 func (u *User) Find(id int) (err error) {
-	err = db.First(u, id).Error
-	return
+	return db.First(u, id).Error
 }
 
 func (u *User) FindBy(column string, value interface{}) error {

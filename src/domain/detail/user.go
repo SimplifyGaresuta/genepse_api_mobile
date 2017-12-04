@@ -1,5 +1,10 @@
 package detail
 
+import (
+	"genepse_api/src/domain"
+	"genepse_api/src/infra/orm"
+)
+
 // User is 詳細画面に表示するユーザー
 type User struct {
 	ID           int       `json:"id"`
@@ -28,6 +33,16 @@ type Sns struct {
 	URL      string `json:"url"`
 }
 
-func GetUser(id uint) (user *User, err error) {
-	return &User{}, nil
+func GetUser(id int) (user *User, err error) {
+	rawUser := orm.User{}
+	if err = rawUser.Find(id); err != nil {
+		return
+	}
+	user = &User{
+		ID:        int(rawUser.Model.ID),
+		Name:      rawUser.Name,
+		AvatarURL: rawUser.AvatarUrl,
+		Attribute: domain.GetAttribute(rawUser.AttributeId),
+	}
+	return
 }
