@@ -17,6 +17,7 @@ const numberOfSkills uint = 3
 // GetResponse return response
 func GetResponse(limit, offset int) (response *Response, err error) {
 	rawUsers := orm.Users{}
+	// TODO 必要なカラムだけselectする
 	if err = rawUsers.LimitOffset(limit, offset); err != nil {
 		return
 	}

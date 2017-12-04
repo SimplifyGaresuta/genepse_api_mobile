@@ -18,20 +18,26 @@ func (f *FacebookAccount) Insert() (err error) {
 	return
 }
 
-// TODO メソッドにする
-func FindFacebookBy(column string, value interface{}) (*FacebookAccount, error) {
-	facebook := FacebookAccount{}
+func (f *FacebookAccount) FindBy(column string, value interface{}) error {
 	switch column {
 	case "AccountId":
 		if v, ok := value.(string); ok {
-			db.Where("account_id = ?", v).First(&facebook)
-			return &facebook, nil
+			db.Where("account_id = ?", v).First(f)
+			return nil
 		} else {
-			return nil, errors.New("AccountIdにはstring型の値を渡して下さい。")
+			return errors.New("AccountIdにはstring型の値を渡して下さい。")
 		}
 	default:
-		return nil, errors.New("カラム名が違います。")
+		return errors.New("カラム名が違います。")
 	}
+}
+
+func (f *FacebookAccount) GetID() uint {
+	return f.Model.ID
+}
+
+func (f *FacebookAccount) ProviderName() string {
+	return "facebook"
 }
 
 // TODO メソッドにする

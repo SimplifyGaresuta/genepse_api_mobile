@@ -1,6 +1,8 @@
 package registration
 
-import "genepse_api/src/infra/orm"
+import (
+	"genepse_api/src/infra/orm"
+)
 
 type Login struct {
 	LoginURL string `json:"login_url"`
@@ -49,5 +51,19 @@ func Register(userName string, avatarURL string, accountID string, provider stri
 		return
 	}
 	userID = u.Model.ID
+	return
+}
+
+func UserID(provider orm.Provider, accountID string) (userID uint, err error) {
+	err = provider.FindBy("AccountId", accountID)
+	if err != nil {
+		return
+	}
+	user := orm.User{}
+	err = user.FindByProvider(provider, provider.GetID())
+	if err != nil {
+		return
+	}
+	userID = user.Model.ID
 	return
 }

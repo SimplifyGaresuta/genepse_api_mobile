@@ -1,13 +1,12 @@
 package feed
 
 import (
-	"fmt"
 	"genepse_api/src/infra/orm"
 )
 
 type Users []User
 
-// Uses is 画面で表示するユーザー情報
+// User is 画面で表示するユーザー情報
 type User struct {
 	ID        uint     `json:"id"`
 	Name      string   `json:"name"`
@@ -23,6 +22,7 @@ func nextExist(id int) bool {
 	return user.Model.ID != 0
 }
 
+// skillsTerms is スキル検索時の条件
 type skillsTerms struct {
 	UserID uint
 	Limit  uint
@@ -40,7 +40,6 @@ func skillsOfUser(terms skillsTerms) (skillNames []string, err error) {
 			return
 		}
 	}
-	fmt.Println("スキルユーザー", skillUsers)
 	for _, s := range *skillUsers {
 		skill := &orm.Skill{}
 		if err := skill.Find(int(s.SkillId)); err != nil {

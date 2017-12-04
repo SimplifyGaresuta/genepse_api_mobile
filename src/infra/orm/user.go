@@ -35,25 +35,27 @@ func (u *User) Find(id int) (err error) {
 	return
 }
 
-// TODO メソッドにする
-func FindUserBy(column string, value interface{}) (*User, error) {
-	user := User{}
+func (u *User) FindBy(column string, value interface{}) error {
 	switch column {
 	case "FacebookAccountId":
 		if v, ok := value.(uint); ok {
-			db.Where("facebook_account_id = ?", v).First(&user)
-			return &user, nil
+			db.Where("facebook_account_id = ?", v).First(u)
+			return nil
 		} else {
-			return nil, errors.New("FacebookAccountIdにはuint型の値を渡して下さい。")
+			return errors.New("FacebookAccountIdにはuint型の値を渡して下さい。")
 		}
 	default:
-		return nil, errors.New("カラム名が違います。")
+		return errors.New("カラム名が違います。")
 	}
+}
+
+func (u *User) FindByProvider(provider Provider, id uint) error {
+	providerName := provider.ProviderName()
+	return db.Where(providerName+"_account_id = ?", id).First(u).Error
 }
 
 type Users []User
 
 func (u *Users) LimitOffset(limit int, offset int) (err error) {
-	err = db.Limit(limit).Offset(offset).Find(u).Error
-	return
+	return db.Limit(limit).Offset(offset).Find(u).Error
 }

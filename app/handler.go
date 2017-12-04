@@ -83,22 +83,20 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if !registration.Registered(providerName, accountID) {
 		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
+			log.Println(err)
+			// TODO 異常系json
 			return
 		}
 	} else {
-		// TODO 抽象化
+		var provider orm.Provider
 		switch providerName {
 		case "facebook":
-			fb, err := orm.FindFacebookBy("AccountId", accountID)
-			if err != nil {
-				http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
-			}
-			u, err := orm.FindUserBy("FacebookAccountId", fb.Model.ID)
-			if err != nil {
-				http.Error(w, fmt.Sprintf("Error when trying to register user with %s: %s", providerName, err), http.StatusInternalServerError)
-			}
-			userID = u.Model.ID
+			provider = &orm.FacebookAccount{}
+		}
+		userID, err = registration.UserID(provider, accountID)
+		if err != nil {
+			log.Println(err)
+			// TODO 異常系json
 		}
 	}
 
