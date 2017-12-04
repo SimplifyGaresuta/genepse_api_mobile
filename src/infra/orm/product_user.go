@@ -8,3 +8,9 @@ type ProductUser struct {
 	UserId    uint `gorm:"type:bigint;not null"`
 	DispOrder uint `gorm:"type:bigint;not null"`
 }
+
+type ProductUsers []ProductUser
+
+func (p *ProductUsers) Where(query string, args ...interface{}) (err error) {
+	return db.Where(query, args...).Find(p).Error
+}

@@ -9,13 +9,17 @@ import (
 type FacebookAccount struct {
 	gorm.Model
 	AccountId string `gorm:"size:100;unique"`
-	MypageUrl string `gorm:"size:300"`
+	MypageUrl string `gorm:"size:300;not null"`
 	DeleteFlg int    `gorm:"type:tinyint;default:0;not null"`
 }
 
 func (f *FacebookAccount) Insert() (err error) {
 	err = db.Create(f).Error
 	return
+}
+
+func (f *FacebookAccount) Find(id int) (err error) {
+	return db.First(f, id).Error
 }
 
 func (f *FacebookAccount) FindBy(column string, value interface{}) error {

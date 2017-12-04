@@ -16,7 +16,7 @@ type User struct {
 	Overview          string `gorm:"size:500"`
 	Awards            string `gorm:"size:500"`
 	License           string `gorm:"size:500"`
-	Gender            int    `gorm:"type:tinyint"`
+	Gender            int    `gorm:"type:tinyint;not null"`
 	Age               int    `gorm:"type:smallint"`
 	Address           string `gorm:"size:100"`
 	SchoolCarrer      string `gorm:"size:500"`
@@ -29,7 +29,7 @@ func (u *User) Insert() (err error) {
 	return
 }
 
-// FindUser find user matching the given id
+// Find find user matching the given id
 func (u *User) Find(id int) (err error) {
 	return db.First(u, id).Error
 }

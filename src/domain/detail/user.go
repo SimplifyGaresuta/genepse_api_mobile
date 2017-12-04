@@ -1,8 +1,10 @@
 package detail
 
 import (
+	"errors"
 	"genepse_api/src/domain"
 	"genepse_api/src/infra/orm"
+	"log"
 )
 
 // User is 詳細画面に表示するユーザー
@@ -34,15 +36,68 @@ type Sns struct {
 }
 
 func GetUser(id int) (user *User, err error) {
-	rawUser := orm.User{}
+	rawUser := &orm.User{}
 	if err = rawUser.Find(id); err != nil {
 		return
+	}
+	gender := domain.GetGender(rawUser.Gender)
+	products, err := getProducts(id)
+	if err != nil {
+		log.Println("ユーザーの作品取得時にエラー", err)
+	}
+	// TODO 抽象化
+	facebookID, err := getFacebookURL(id)
+	if err != nil {
+		log.Println("ユーザーのfacebook取得時にエラー", err)
 	}
 	user = &User{
 		ID:        int(rawUser.Model.ID),
 		Name:      rawUser.Name,
 		AvatarURL: rawUser.AvatarUrl,
 		Attribute: domain.GetAttribute(rawUser.AttributeId),
+		Products:  products,
+		// TODO 抽象化
+		Sns: []Sns{Sns{Provider: "facebook", URL: facebookID}},
+		// TODO カンマ区切りの処理やる
+		License:      []string{"TOEIC 800点"},
+		Gender:       gender,
+		Age:          rawUser.Age,
+		Address:      rawUser.Address,
+		SchoolCareer: rawUser.SchoolCarrer,
 	}
+	return
+}
+
+func getProducts(userID int) (products []Product, err error) {
+	productUsers := orm.ProductUsers{}
+	if err = productUsers.Where("user_id = ?", userID); err != nil {
+		return
+	}
+	for _, productUser := range productUsers {
+		p := &orm.Product{}
+		if err = p.Find(int(productUser.Model.ID)); err != nil {
+			return
+		}
+		products = append(products, Product{Title: p.Title, URL: p.ReferenceUrl})
+	}
+	return
+}
+
+// TODO providerで抽象化
+func getFacebookURL(userID int) (url string, err error) {
+	user := &orm.User{}
+	if err = user.Find(userID); err != nil {
+		return
+	}
+	fbID := user.FacebookAccountId
+	if fbID == 0 {
+		err = errors.New("facebookが登録されていません")
+		return
+	}
+	fb := &orm.FacebookAccount{}
+	if err = fb.Find(int(fbID)); err != nil {
+		return
+	}
+	url = fb.MypageUrl
 	return
 }

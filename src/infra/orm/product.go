@@ -9,3 +9,7 @@ type Product struct {
 	ImageUrl     string `gorm:"size:300"`
 	DeleteFlg    int    `gorm:"type:tinyint;default:0;not null"`
 }
+
+func (p *Product) Find(id int) (err error) {
+	return db.First(p, id).Error
+}
