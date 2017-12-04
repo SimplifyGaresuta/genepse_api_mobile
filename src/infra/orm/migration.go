@@ -23,4 +23,9 @@ func Setup() {
 			panic(err)
 		}
 	}
+	if !db.HasTable(&Product{}) {
+		if err := db.CreateTable(&Product{}).Error; err != nil {
+			panic(err)
+		}
+	}
 }
