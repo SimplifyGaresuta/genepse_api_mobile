@@ -78,16 +78,9 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
 	user, err := middleware.GetUser(providerName, r.URL.RawQuery)
 	accountID := user.IDForProvider(providerName)
-	var userID uint
 
-	if !registration.Registered(providerName, accountID) {
-		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
-		if err != nil {
-			log.Println(err)
-			// TODO 異常系json
-			return
-		}
-	} else {
+	var userID uint
+	if registration.Registered(providerName, accountID) {
 		var provider orm.Provider
 		switch providerName {
 		case "facebook":
@@ -97,6 +90,14 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		if err != nil {
 			log.Println(err)
 			// TODO 異常系json
+			return
+		}
+	} else { // 登録
+		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
+		if err != nil {
+			log.Println(err)
+			// TODO 異常系json
+			return
 		}
 	}
 
