@@ -30,8 +30,8 @@ func (u *User) Insert() (err error) {
 }
 
 // FindUser find user matching the given id
-func (u *User) Find(id int) {
-	db.First(u, id)
+func (u *User) Find(id int) (err error) {
+	err = db.First(u, id).Error
 	return
 }
 

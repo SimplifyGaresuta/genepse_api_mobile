@@ -8,7 +8,7 @@ import (
 
 var user common.User
 
-func GetUser(providerName string, urlQuery string) (common.User, error) {
+func GetUser(providerName, urlQuery string) (common.User, error) {
 	provider, err := gomniauth.Provider(providerName)
 	if err != nil {
 		return nil, err

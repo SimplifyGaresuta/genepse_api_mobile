@@ -23,6 +23,7 @@ func nextExist(id int) bool {
 	return user.Model.ID != 0
 }
 
+// TODO 件数も指定出来るように
 // 与えられたユーザーのスキル名を全て返す
 func skillsOfUser(userID uint) (skillNames []string, err error) {
 	skillUsers := &orm.SkillUsers{}

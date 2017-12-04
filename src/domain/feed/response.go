@@ -12,7 +12,7 @@ type Response struct {
 }
 
 // GetResponse return response
-func GetResponse(limit int, offset int) (response *Response, err error) {
+func GetResponse(limit, offset int) (response *Response, err error) {
 	rawUsers := orm.Users{}
 	if err = rawUsers.LimitOffset(limit, offset); err != nil {
 		return

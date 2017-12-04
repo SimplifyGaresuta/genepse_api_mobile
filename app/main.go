@@ -18,9 +18,6 @@ func main() {
 	defer orm.CloseMysql()
 	orm.Setup()
 
-	//	user := orm.FindUser(1)
-	//	log.Println(*user)
-	//	os.Exit(0)
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
 	gomniauth.SetSecurityKey(globalSecret)
 	gomniauth.WithProviders(
