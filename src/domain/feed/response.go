@@ -2,6 +2,7 @@ package feed
 
 import (
 	"errors"
+	"genepse_api/src/domain"
 	"genepse_api/src/infra/orm"
 )
 
@@ -36,6 +37,7 @@ func GetResponse(limit, offset int) (response *Response, err error) {
 			ID:        u.Model.ID,
 			Name:      u.Name,
 			AvatarURL: u.AvatarUrl,
+			Attribute: domain.GetAttribute(u.AttributeId),
 			Skills:    skills,
 			Overview:  u.Overview,
 		}
