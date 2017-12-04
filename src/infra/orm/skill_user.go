@@ -33,8 +33,12 @@ func (s *SkillUser) FindBy(column string, value interface{}) error {
 
 type SkillUsers []SkillUser
 
-// TODO 現状一つ目の引数しか渡せてないから直す
 func (s *SkillUsers) Where(query string, args ...interface{}) (err error) {
-	err = db.Where(query, args[0]).Find(s).Error
+	err = db.Debug().Where(query, args...).Find(s).Error
+	return
+}
+
+func (s *SkillUsers) WhereLimit(query string, limit int, args ...interface{}) (err error) {
+	err = db.Debug().Where(query, args...).Find(s).Limit(limit).Error
 	return
 }

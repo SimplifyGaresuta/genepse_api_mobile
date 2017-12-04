@@ -23,12 +23,22 @@ func nextExist(id int) bool {
 	return user.Model.ID != 0
 }
 
-// TODO 件数も指定出来るように
-// 与えられたユーザーのスキル名を全て返す
-func skillsOfUser(userID uint) (skillNames []string, err error) {
+type skillsTerms struct {
+	UserID uint
+	Limit  uint
+}
+
+// 与えられたユーザーのスキル名を返す
+func skillsOfUser(terms skillsTerms) (skillNames []string, err error) {
 	skillUsers := &orm.SkillUsers{}
-	if err = skillUsers.Where("user_id = ?", userID); err != nil {
-		return
+	if terms.Limit == 0 {
+		if err = skillUsers.Where("user_id = ?", terms.UserID); err != nil {
+			return
+		}
+	} else {
+		if err = skillUsers.WhereLimit("user_id = ? and disp_order <= ?", 3, terms.UserID, terms.Limit); err != nil {
+			return
+		}
 	}
 	fmt.Println("スキルユーザー", skillUsers)
 	for _, s := range *skillUsers {

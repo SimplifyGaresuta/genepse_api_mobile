@@ -11,6 +11,9 @@ type Response struct {
 	Users   Users `json:"users"`
 }
 
+// スキルの表示数
+const numberOfSkills uint = 3
+
 // GetResponse return response
 func GetResponse(limit, offset int) (response *Response, err error) {
 	rawUsers := orm.Users{}
@@ -24,7 +27,7 @@ func GetResponse(limit, offset int) (response *Response, err error) {
 
 	users := Users{}
 	for _, u := range rawUsers {
-		skills, err := skillsOfUser(u.Model.ID)
+		skills, err := skillsOfUser(skillsTerms{UserID: u.Model.ID, Limit: numberOfSkills})
 		if err != nil {
 			break
 		}
