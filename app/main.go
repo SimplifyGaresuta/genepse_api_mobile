@@ -31,6 +31,6 @@ func main() {
 	router.PATCH("/v1/users/:id", userUpdate)
 	router.PUT("/v1/locations/:id", locationUpdate)
 
-	log.Println("Start server!! on :8080")
+	log.Println("Start api server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
