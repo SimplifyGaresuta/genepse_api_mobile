@@ -65,6 +65,10 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
+func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
 // TODO gomniauth使用はmiddlewareに任せる
 func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
