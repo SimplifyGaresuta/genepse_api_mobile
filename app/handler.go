@@ -91,7 +91,7 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	res := registration.Login{
 		LoginURL: loginURL,
 	}
-	fmt.Println("ログインURL", loginURL)
+	fmt.Println("login_URL", loginURL)
 	returnJSON(w, res)
 }
 
