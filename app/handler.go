@@ -18,7 +18,7 @@ import (
 
 type Response interface{}
 
-func returnJson(w http.ResponseWriter, res Response) error {
+func returnJSON(w http.ResponseWriter, res Response) error {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	r, err := json.Marshal(res)
 	if err != nil {
@@ -31,6 +31,11 @@ func returnJson(w http.ResponseWriter, res Response) error {
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	query := r.URL.Query()
 	limit, err := strconv.Atoi(query["limit"][0])
+	if err != nil {
+		log.Println("クエリパラメータが不正です", err)
+		// TODO 異常系のjson
+		return
+	}
 	offset, err := strconv.Atoi(query["offset"][0])
 	if err != nil {
 		log.Println("クエリパラメータが不正です", err)
@@ -43,7 +48,7 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		// TODO 異常系のjson返す
 		return
 	}
-	returnJson(w, response)
+	returnJSON(w, response)
 }
 
 func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -59,7 +64,7 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		// TODO 異常系json
 		return
 	}
-	returnJson(w, user)
+	returnJSON(w, user)
 }
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -87,7 +92,7 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		LoginURL: loginURL,
 	}
 	fmt.Println("ログインURL", loginURL)
-	returnJson(w, res)
+	returnJSON(w, res)
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
@@ -95,6 +100,11 @@ func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")
 	user, err := middleware.GetUser(providerName, r.URL.RawQuery)
+	if err != nil {
+		log.Println(err)
+		// TODO 異常系json
+		return
+	}
 	accountID := user.IDForProvider(providerName)
 
 	var userID uint
@@ -121,5 +131,5 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	res := registration.Callback{
 		UserID: userID,
 	}
-	returnJson(w, res)
+	returnJSON(w, res)
 }
