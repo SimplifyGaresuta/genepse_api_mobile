@@ -68,10 +68,18 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	// json受け取る
+	defer r.Body.Close()
+	// 更新
+	if err := detail.UpdateUser(r.Body); err != nil {
+		log.Println("プロフィール更新時にエラー", err)
+		// TODO 異常系json
+		return
+	}
 }
 
 func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
+	defer r.Body.Close()
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
