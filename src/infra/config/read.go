@@ -1,5 +1,7 @@
 package config
 
+// GAEに対応してない可能性大だから消す
+/*
 import "github.com/spf13/viper"
 
 // Read is viperを使った設定ファイル読み込みを実現
@@ -9,3 +11,4 @@ func Read(fileName string) (err error) {
 	err = viper.ReadInConfig()
 	return
 }
+*/
