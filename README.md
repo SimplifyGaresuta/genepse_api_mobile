@@ -53,3 +53,9 @@ $ curl -H 'Content-Type:application/json' -H 'User-Agent:iPhone' http://localhos
 ```
 $ curl -H 'User-Agent:iPhone' http://localhost:8080/users?per_page=20&page=1
 ```
+
+### ユーザー更新
+
+```
+curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/users/1 -d @samples/requests/user_update.json
+```

@@ -4,9 +4,15 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"log"
 )
 
 func UpdateUser(r io.ReadCloser) error {
+	user, err := decode(r)
+	log.Printf("ユーザーは%#v", user)
+	if err != nil {
+		return nil
+	}
 	return nil
 }
 
