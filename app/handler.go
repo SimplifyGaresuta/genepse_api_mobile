@@ -77,7 +77,7 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// json受け取る
 	defer r.Body.Close()
 	// 更新
-	if err := detail.UpdateUser(id, r.Body); err != nil {
+	if err := detail.UpdateUser(uint(id), r.Body); err != nil {
 		log.Println("プロフィール更新時にエラー", err)
 		// TODO 異常系json
 		return

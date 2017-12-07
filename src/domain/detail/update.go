@@ -9,21 +9,18 @@ import (
 	"log"
 )
 
-func UpdateUser(id int, r io.ReadCloser) error {
+func UpdateUser(id uint, r io.ReadCloser) error {
 	user, err := decode(r)
 	if err != nil {
 		return err
 	}
 	log.Printf("ユーザーは%#v", user)
-	rawUser, err := doMapping(user)
+	rawUser, err := doMapping(id, user)
 	if err != nil {
 		return err
 	}
-	if err := update(rawUser); err != nil {
+	if err := rawUser.Update(); err != nil {
 		return err
-	}
-	if err != nil {
-		return nil
 	}
 	return nil
 }
@@ -40,8 +37,9 @@ func decode(r io.ReadCloser) (*User, error) {
 	return user, nil
 }
 
-func doMapping(user *User) (*orm.User, error) {
+func doMapping(id uint, user *User) (*orm.User, error) {
 	// TODO 埋め込んでるとこちゃんとやる
+	// TODO skillsとproductsも更新
 	// TODO snsを更新した時にFacebookAccountIdも更新させる
 	rawUser := &orm.User{
 		Name:         user.Name,
@@ -55,6 +53,7 @@ func doMapping(user *User) (*orm.User, error) {
 		Address:      user.Address,
 		SchoolCarrer: user.SchoolCareer,
 	}
+	rawUser.Model.ID = id
 	return rawUser, nil
 }
 func update(user *orm.User) error {

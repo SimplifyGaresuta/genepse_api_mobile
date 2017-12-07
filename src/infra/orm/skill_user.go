@@ -15,6 +15,11 @@ type SkillUser struct {
 	DeleteFlg int  `gorm:"type:tinyint;default:0;not null"`
 }
 
+func (s *SkillUser) Insert() (err error) {
+	err = db.Create(s).Error
+	return
+}
+
 func (s *SkillUser) FindBy(column string, value interface{}) error {
 	switch column {
 	case "UserId":

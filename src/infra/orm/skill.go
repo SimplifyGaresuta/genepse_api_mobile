@@ -13,3 +13,8 @@ func (s *Skill) Find(id int) (err error) {
 	err = db.First(s, id).Error
 	return
 }
+
+func (s *Skill) Insert() (err error) {
+	err = db.Create(s).Error
+	return
+}
