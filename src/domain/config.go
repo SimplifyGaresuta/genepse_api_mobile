@@ -19,6 +19,19 @@ func GetAttribute(id int) string {
 	}
 }
 
+func GetAttributeID(attribute string) int {
+	switch attribute {
+	case "Business":
+		return BUSINESS
+	case "Engineer":
+		return ENGINEER
+	case "Designer":
+		return DESIGNER
+	default:
+		return 0
+	}
+}
+
 const (
 	MAN = 1 + iota
 	WOMAN
@@ -32,6 +45,17 @@ func GetGender(id int) string {
 		return "女性"
 	default:
 		return "その他"
+	}
+}
+
+func GetGenderID(gender string) int {
+	switch gender {
+	case "男性":
+		return MAN
+	case "女性":
+		return WOMAN
+	default:
+		return 3
 	}
 }
 

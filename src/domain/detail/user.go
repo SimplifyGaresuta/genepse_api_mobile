@@ -23,6 +23,7 @@ type User struct {
 	Age          int       `json:"age"`
 	Address      string    `json:"address"`
 	SchoolCareer string    `json:"school_career"`
+	ActivityBase string    `json:"activity_base"`
 }
 
 type Product struct {
@@ -55,7 +56,12 @@ func GetUser(id int) (user *User, err error) {
 		Name:      rawUser.Name,
 		AvatarURL: rawUser.AvatarUrl,
 		Attribute: domain.GetAttribute(rawUser.AttributeId),
-		Products:  products,
+		// TODO しっかり取る
+		Skills:   []string{"ruby", "java"},
+		Overview: rawUser.Overview,
+		// TODO カンマ区切りの処理やる
+		Awards:   []string{"ジロッカソン 優勝"},
+		Products: products,
 		// TODO 抽象化
 		Sns: []Sns{Sns{Provider: "facebook", URL: facebookID}},
 		// TODO カンマ区切りの処理やる

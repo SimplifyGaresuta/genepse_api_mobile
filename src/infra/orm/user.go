@@ -20,6 +20,7 @@ type User struct {
 	Age               int    `gorm:"type:smallint"`
 	Address           string `gorm:"size:100"`
 	SchoolCarrer      string `gorm:"size:500"`
+	ActivityBase      string `gorm:"size:100"`
 	FacebookAccountId uint   `gorm:"type:bigint"`
 	DeleteFlg         int    `gorm:"type:tinyint;default:0;not null"`
 }

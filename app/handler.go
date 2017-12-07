@@ -68,10 +68,16 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	id, err := strconv.Atoi(ps.ByName("id"))
+	if err != nil {
+		log.Println("idが不正です。")
+		// TODO 異常系json
+		return
+	}
 	// json受け取る
 	defer r.Body.Close()
 	// 更新
-	if err := detail.UpdateUser(r.Body); err != nil {
+	if err := detail.UpdateUser(id, r.Body); err != nil {
 		log.Println("プロフィール更新時にエラー", err)
 		// TODO 異常系json
 		return
