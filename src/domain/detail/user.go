@@ -58,9 +58,15 @@ func GetUser(id int) (user *User, err error) {
 	if err != nil {
 		log.Println("ユーザーの受賞歴取得時にエラー", err)
 	}
-	licenseName, err := getLicenses(id)
+
+	licenseNames, err := getLicenses(id)
 	if err != nil {
 		log.Println("ユーザーの資格取得時にエラー", err)
+	}
+
+	skillNames, err := getSkills(id)
+	if err != nil {
+		log.Println("ユーザーのスキル取得時にエラー", err)
 	}
 
 	user = &User{
@@ -69,13 +75,13 @@ func GetUser(id int) (user *User, err error) {
 		AvatarURL: rawUser.AvatarUrl,
 		Attribute: domain.GetAttribute(rawUser.AttributeId),
 		// TODO しっかり取る
-		Skills:   []string{"ruby", "java"},
+		Skills:   skillNames,
 		Overview: rawUser.Overview,
 		Awards:   awardNames,
 		Products: products,
 		// TODO 抽象化
 		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookID}},
-		Licenses:     licenseName,
+		Licenses:     licenseNames,
 		Gender:       gender,
 		Age:          rawUser.Age,
 		Address:      rawUser.Address,
@@ -128,13 +134,29 @@ func getAwards(userID int) (awardNames []string, err error) {
 	}
 	return
 }
-func getLicenses(userID int) (licenseName []string, err error) {
+func getLicenses(userID int) (licenseNames []string, err error) {
 	licenses := orm.Licenses{}
 	if err = licenses.FindByUser(userID); err != nil {
 		return
 	}
 	for _, license := range licenses {
-		licenseName = append(licenseName, license.Name)
+		licenseNames = append(licenseNames, license.Name)
+	}
+	return
+}
+
+// アソシエーションしたら直す
+func getSkills(userID int) (skillNames []string, err error) {
+	skillUsers := orm.SkillUsers{}
+	if err = skillUsers.Where("user_id = ?", userID); err != nil {
+		return
+	}
+	for _, skillUser := range skillUsers {
+		skill := &orm.Skill{}
+		if err = skill.Find(int(skillUser.SkillId)); err != nil {
+			return
+		}
+		skillNames = append(skillNames, skill.Name)
 	}
 	return
 }
