@@ -53,24 +53,14 @@ func GetUser(id int) (user *User, err error) {
 		log.Println("ユーザーのfacebook取得時にエラー", err)
 	}
 
-	// TODO 受賞歴取得リファクタリング
-	awardNames := []string{}
-	awards := orm.Awards{}
-	if err = awards.FindByUser(id); err != nil {
+	// TODO awardとlicenseで抽象化
+	awardNames, err := getAwards(id)
+	if err != nil {
 		log.Println("ユーザーの受賞歴取得時にエラー", err)
 	}
-	for _, award := range awards {
-		awardNames = append(awardNames, award.Name)
-	}
-
-	// TODO 資格取得リファクタリング
-	licenseName := []string{}
-	licenses := orm.Licenses{}
-	if err = licenses.FindByUser(id); err != nil {
+	licenseName, err := getLicenses(id)
+	if err != nil {
 		log.Println("ユーザーの資格取得時にエラー", err)
-	}
-	for _, license := range licenses {
-		licenseName = append(licenseName, license.Name)
 	}
 
 	user = &User{
@@ -125,5 +115,26 @@ func getFacebookURL(userID int) (url string, err error) {
 		return
 	}
 	url = fb.MypageUrl
+	return
+}
+
+func getAwards(userID int) (awardNames []string, err error) {
+	awards := orm.Awards{}
+	if err = awards.FindByUser(userID); err != nil {
+		return
+	}
+	for _, award := range awards {
+		awardNames = append(awardNames, award.Name)
+	}
+	return
+}
+func getLicenses(userID int) (licenseName []string, err error) {
+	licenses := orm.Licenses{}
+	if err = licenses.FindByUser(userID); err != nil {
+		return
+	}
+	for _, license := range licenses {
+		licenseName = append(licenseName, license.Name)
+	}
 	return
 }
