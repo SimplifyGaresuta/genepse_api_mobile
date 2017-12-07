@@ -14,3 +14,7 @@ type ProductUsers []ProductUser
 func (p *ProductUsers) Where(query string, args ...interface{}) (err error) {
 	return db.Where(query, args...).Find(p).Error
 }
+
+func (_ *ProductUsers) BatchDelete(query string, args ...interface{}) error {
+	return db.Where(query, args...).Delete(&ProductUser{}).Error
+}

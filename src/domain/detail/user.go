@@ -46,10 +46,21 @@ func GetUser(id int) (user *User, err error) {
 	if err != nil {
 		log.Println("ユーザーの作品取得時にエラー", err)
 	}
+
 	// TODO 抽象化
 	facebookID, err := getFacebookURL(id)
 	if err != nil {
 		log.Println("ユーザーのfacebook取得時にエラー", err)
+	}
+
+	// TODO 受賞歴取得リファクタリング
+	awardNames := []string{}
+	awards := orm.Awards{}
+	if err = awards.FindByUser(id); err != nil {
+		log.Println("ユーザーの受賞歴取得時にエラー", err)
+	}
+	for _, award := range awards {
+		awardNames = append(awardNames, award.Name)
 	}
 	user = &User{
 		ID:        int(rawUser.Model.ID),
@@ -59,8 +70,7 @@ func GetUser(id int) (user *User, err error) {
 		// TODO しっかり取る
 		Skills:   []string{"ruby", "java"},
 		Overview: rawUser.Overview,
-		// TODO カンマ区切りの処理やる
-		Awards:   []string{"ジロッカソン 優勝"},
+		Awards:   awardNames,
 		Products: products,
 		// TODO 抽象化
 		Sns: []Sns{Sns{Provider: "facebook", URL: facebookID}},

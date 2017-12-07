@@ -14,7 +14,7 @@ type User struct {
 	AvatarUrl         string `gorm:"size:300"`
 	AttributeId       int    `gorm:"type:smallint;default:1;not null"`
 	Overview          string `gorm:"size:500"`
-	Awards            string `gorm:"size:500"`
+	Awards            []Award
 	License           string `gorm:"size:500"`
 	Gender            int    `gorm:"type:tinyint;not null"`
 	Age               int    `gorm:"type:smallint"`
@@ -22,7 +22,6 @@ type User struct {
 	SchoolCarrer      string `gorm:"size:500"`
 	ActivityBase      string `gorm:"size:100"`
 	FacebookAccountId uint   `gorm:"type:bigint"`
-	DeleteFlg         int    `gorm:"type:tinyint;default:0;not null"`
 }
 
 func (u *User) Insert() (err error) {

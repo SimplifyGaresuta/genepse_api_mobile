@@ -2,12 +2,12 @@ package orm
 
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	dropTable()
+	//dropTable()
 	createTable()
 }
 
 func dropTable() {
-	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &ProductUser{})
+	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &ProductUser{}, &Award{})
 }
 
 func createTable() {
@@ -58,6 +58,13 @@ func createTable() {
 			panic(err)
 		}
 	}
+
+	if !db.HasTable(&Award{}) {
+		if err := db.CreateTable(&Award{}).Error; err != nil {
+			panic(err)
+		}
+	}
+
 }
 
 func insertUser() (err error) {
@@ -67,7 +74,6 @@ func insertUser() (err error) {
 			AvatarUrl:         "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14368752_227659240970532_4518352865855223562_n.jpg?oh=64beb0ab4d6b59bc1ab43c3ccf041976&oe=5AD6F164",
 			AttributeId:       1,
 			Overview:          "頑張ります。",
-			Awards:            "A大会優勝",
 			License:           "TOEIC 900点",
 			Gender:            1,
 			Age:               20,

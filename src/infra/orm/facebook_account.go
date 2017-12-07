@@ -10,7 +10,6 @@ type FacebookAccount struct {
 	gorm.Model
 	AccountId string `gorm:"size:100;unique"`
 	MypageUrl string `gorm:"size:300;not null"`
-	DeleteFlg int    `gorm:"type:tinyint;default:0;not null"`
 }
 
 func (f *FacebookAccount) Insert() (err error) {

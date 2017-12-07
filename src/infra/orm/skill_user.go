@@ -12,7 +12,6 @@ type SkillUser struct {
 	SkillId   uint `gorm:"type:bigint;not null"`
 	UserId    uint `gorm:"type:bigint;not null"`
 	DispOrder uint `gorm:"type:bigint;not null"`
-	DeleteFlg int  `gorm:"type:tinyint;default:0;not null"`
 }
 
 func (s *SkillUser) Insert() (err error) {
@@ -38,12 +37,14 @@ func (s *SkillUser) FindBy(column string, value interface{}) error {
 
 type SkillUsers []SkillUser
 
-func (s *SkillUsers) Where(query string, args ...interface{}) (err error) {
-	err = db.Where(query, args...).Find(s).Error
-	return
+func (s *SkillUsers) Where(query string, args ...interface{}) error {
+	return db.Where(query, args...).Find(s).Error
 }
 
-func (s *SkillUsers) WhereLimit(query string, limit int, args ...interface{}) (err error) {
-	err = db.Where(query, args...).Find(s).Limit(limit).Error
-	return
+func (s *SkillUsers) WhereLimit(query string, limit int, args ...interface{}) error {
+	return db.Where(query, args...).Find(s).Limit(limit).Error
+}
+
+func (_ *SkillUsers) BatchDelete(query string, args ...interface{}) error {
+	return db.Where(query, args...).Delete(&SkillUser{}).Error
 }
