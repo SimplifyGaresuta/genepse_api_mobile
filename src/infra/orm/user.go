@@ -15,7 +15,7 @@ type User struct {
 	AttributeId       int    `gorm:"type:smallint;default:1;not null"`
 	Overview          string `gorm:"size:500"`
 	Awards            []Award
-	License           string `gorm:"size:500"`
+	Licenses          []License
 	Gender            int    `gorm:"type:tinyint;not null"`
 	Age               int    `gorm:"type:smallint"`
 	Address           string `gorm:"size:100"`

@@ -18,7 +18,7 @@ type User struct {
 	Awards       []string  `json:"awards"`
 	Products     []Product `json:"products"`
 	Sns          []Sns     `json:"sns"`
-	License      []string  `json:"license"`
+	Licenses     []string  `json:"license"`
 	Gender       string    `json:"gender"`
 	Age          int       `json:"age"`
 	Address      string    `json:"address"`
@@ -62,6 +62,17 @@ func GetUser(id int) (user *User, err error) {
 	for _, award := range awards {
 		awardNames = append(awardNames, award.Name)
 	}
+
+	// TODO 資格取得リファクタリング
+	licenseName := []string{}
+	licenses := orm.Licenses{}
+	if err = licenses.FindByUser(id); err != nil {
+		log.Println("ユーザーの資格取得時にエラー", err)
+	}
+	for _, license := range licenses {
+		licenseName = append(licenseName, license.Name)
+	}
+
 	user = &User{
 		ID:        int(rawUser.Model.ID),
 		Name:      rawUser.Name,
@@ -73,9 +84,8 @@ func GetUser(id int) (user *User, err error) {
 		Awards:   awardNames,
 		Products: products,
 		// TODO 抽象化
-		Sns: []Sns{Sns{Provider: "facebook", URL: facebookID}},
-		// TODO カンマ区切りの処理やる
-		License:      []string{"TOEIC 800点"},
+		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookID}},
+		Licenses:     licenseName,
 		Gender:       gender,
 		Age:          rawUser.Age,
 		Address:      rawUser.Address,

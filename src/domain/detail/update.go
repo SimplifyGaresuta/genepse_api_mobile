@@ -26,6 +26,9 @@ func UpdateUser(id uint, r io.ReadCloser) error {
 	if err := updateAward(id, user.Awards); err != nil {
 		return err
 	}
+	if err := updateLicense(id, user.Licenses); err != nil {
+		return err
+	}
 	// アソシエーションしたら消す
 	if err := updateSkills(id, user.Skills); err != nil {
 		return err
@@ -54,7 +57,6 @@ func mappingUser(id uint, user *User) (rawUser *orm.User, err error) {
 		Name:         user.Name,
 		AvatarUrl:    user.AvatarURL,
 		Overview:     user.Overview,
-		License:      "TOEIC 880点",
 		Age:          user.Age,
 		Address:      user.Address,
 		SchoolCarrer: user.SchoolCareer,
@@ -77,6 +79,22 @@ func updateAward(userID uint, awardNames []string) (err error) {
 		for _, awardName := range awardNames {
 			award := &orm.Award{UserId: userID, Name: awardName}
 			if err = award.Insert(); err != nil {
+				return
+			}
+		}
+	}
+	return
+}
+
+func updateLicense(userID uint, licenseNames []string) (err error) {
+	if len(licenseNames) >= 1 {
+		licenses := orm.Licenses{}
+		if err = licenses.BatchDelete("user_id = ?", userID); err != nil {
+			return
+		}
+		for _, name := range licenseNames {
+			license := &orm.License{UserId: userID, Name: name}
+			if err = license.Insert(); err != nil {
 				return
 			}
 		}
