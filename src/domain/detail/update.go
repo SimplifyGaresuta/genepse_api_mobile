@@ -50,8 +50,6 @@ func decode(r io.ReadCloser) (*User, error) {
 }
 
 func mappingUser(id uint, user *User) (rawUser *orm.User, err error) {
-	// TODO 埋め込んでるとこちゃんとやる
-	// TODO skillsとproductsも更新
 	// TODO snsを更新した時にFacebookAccountIdも更新させる
 	rawUser = &orm.User{
 		Name:         user.Name,

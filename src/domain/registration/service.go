@@ -12,7 +12,7 @@ type Callback struct {
 	UserID uint `json:"user_id"`
 }
 
-// TODO レコード毎とらずに、存在確認のみする
+// TODO レコードごととらずに、存在確認のみする
 // TODO プロバイダー毎に処理書かずに抽象化したい
 func Registered(provider string, accountID string) bool {
 	switch provider {
