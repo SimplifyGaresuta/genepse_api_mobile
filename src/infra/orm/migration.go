@@ -7,7 +7,7 @@ func Setup() {
 }
 
 func dropTable() {
-	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &ProductUser{}, &Award{})
+	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &ProductUser{}, &Award{}, &License{})
 }
 
 func createTable() {
@@ -65,6 +65,11 @@ func createTable() {
 		}
 	}
 
+	if !db.HasTable(&License{}) {
+		if err := db.CreateTable(&License{}).Error; err != nil {
+			panic(err)
+		}
+	}
 }
 
 func insertUser() (err error) {

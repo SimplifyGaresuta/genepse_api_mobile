@@ -18,7 +18,7 @@ type User struct {
 	Awards       []string  `json:"awards"`
 	Products     []Product `json:"products"`
 	Sns          []Sns     `json:"sns"`
-	Licenses     []string  `json:"license"`
+	Licenses     []string  `json:"licenses"`
 	Gender       string    `json:"gender"`
 	Age          int       `json:"age"`
 	Address      string    `json:"address"`
