@@ -74,11 +74,10 @@ func GetUser(id int) (user *User, err error) {
 		Name:      rawUser.Name,
 		AvatarURL: rawUser.AvatarUrl,
 		Attribute: domain.GetAttribute(rawUser.AttributeId),
-		// TODO しっかり取る
-		Skills:   skillNames,
-		Overview: rawUser.Overview,
-		Awards:   awardNames,
-		Products: products,
+		Skills:    skillNames,
+		Overview:  rawUser.Overview,
+		Awards:    awardNames,
+		Products:  products,
 		// TODO 抽象化
 		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookID}},
 		Licenses:     licenseNames,
