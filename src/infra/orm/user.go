@@ -54,9 +54,9 @@ func (u *User) FindByProvider(provider Provider, id uint) error {
 	return db.Where(providerName+"_account_id = ?", id).First(u).Error
 }
 
-func (u *User) Update() error {
+func (u *User) Update(id uint) error {
 	before := User{}
-	before.ID = u.Model.ID
+	before.ID = id
 	return db.Debug().Model(&before).Updates(u).Error
 }
 

@@ -15,11 +15,11 @@ func UpdateUser(id uint, r io.ReadCloser) error {
 		return err
 	}
 	log.Printf("ユーザーは%#v", user)
-	rawUser, err := doMapping(id, user)
+	rawUser, err := mappingUser(user)
 	if err != nil {
 		return err
 	}
-	if err := rawUser.Update(); err != nil {
+	if err := rawUser.Update(id); err != nil {
 		return err
 	}
 	return nil
@@ -37,23 +37,27 @@ func decode(r io.ReadCloser) (*User, error) {
 	return user, nil
 }
 
-func doMapping(id uint, user *User) (*orm.User, error) {
+func mappingUser(user *User) (*orm.User, error) {
 	// TODO 埋め込んでるとこちゃんとやる
 	// TODO skillsとproductsも更新
 	// TODO snsを更新した時にFacebookAccountIdも更新させる
 	rawUser := &orm.User{
 		Name:         user.Name,
 		AvatarUrl:    user.AvatarURL,
-		AttributeId:  domain.GetAttributeID(user.Attribute),
 		Overview:     user.Overview,
 		Awards:       "ジロッカソン優勝, SPAJAM優勝",
 		License:      "TOEIC 880点",
-		Gender:       domain.GetGenderID(user.Gender),
 		Age:          user.Age,
 		Address:      user.Address,
 		SchoolCarrer: user.SchoolCareer,
 	}
-	rawUser.Model.ID = id
+	if user.Attribute != "" {
+		rawUser.AttributeId = domain.GetAttributeID(user.Attribute)
+	}
+	if user.Gender != "" {
+		rawUser.Gender = domain.GetGenderID(user.Gender)
+	}
+
 	return rawUser, nil
 }
 func update(user *orm.User) error {
