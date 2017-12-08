@@ -147,3 +147,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	returnJSON(w, res)
 }
+
+func healthCheck(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	log.Println("I am healthy!")
+}

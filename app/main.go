@@ -24,6 +24,7 @@ func main() {
 		facebook.New(facebookClient, clientSecret, "http://localhost:8080/v1/callback/facebook"),
 	)
 	router := httprouter.New()
+	router.GET("/readiness_check", healthCheck)
 	router.GET("/v1/login_url/:provider", login)
 	router.GET("/v1/callback/:provider", callback)
 	router.GET("/v1/users", userList)

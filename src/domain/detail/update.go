@@ -1,3 +1,4 @@
+// TODO 全体的にリファクタリングする
 package detail
 
 import (
