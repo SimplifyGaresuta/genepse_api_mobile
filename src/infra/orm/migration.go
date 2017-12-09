@@ -145,6 +145,15 @@ func insertSkill() (err error) {
 		Skill{
 			Name: "php",
 		},
+		Skill{
+			Name: "AE",
+		},
+		Skill{
+			Name: "営業",
+		},
+		Skill{
+			Name: "自然言語処理",
+		},
 	}
 	for _, s := range skills {
 		if err = s.Insert(); err != nil {

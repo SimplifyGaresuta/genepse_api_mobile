@@ -20,7 +20,8 @@ type Response interface{}
 
 func returnJSON(w http.ResponseWriter, res Response) error {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	r, err := json.Marshal(res)
+	// TODO 本番はjson.Marshalを使用する
+	r, err := json.MarshalIndent(res, "", "  ")
 	if err != nil {
 		return err
 	}
