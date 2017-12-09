@@ -1,8 +1,7 @@
 package orm
 
 import (
-	"fmt"
-	"genepse_api/src/infra/config"
+	"database/sql"
 	"log"
 	"os"
 
@@ -11,20 +10,20 @@ import (
 )
 
 var db *gorm.DB
+var mdb *sql.DB
 
 func OpenMysql() (err error) {
-	log.Println("今から開くよ！")
 	if isDevelop() {
-		db, err = gorm.Open("mysql", config.MysqlUserName+":"+config.MysqlPass+"@/"+config.MysqlDbName+"?charset="+config.MysqlCharset+"&parseTime="+config.MysqlParseTime+"&loc="+config.MysqlLoc)
+		db, err = gorm.Open("mysql", os.Getenv("MYSQL_USER")+":"+os.Getenv("MYSQL_PASS")+"@/"+os.Getenv("GENEPSE_DBNAME")+"?charset="+os.Getenv("MYSQL_CHARSET")+"&parseTime="+os.Getenv("MYSQL_PARSETIME")+"&loc="+os.Getenv("MYSQL_LOC"))
 	} else {
 		log.Println("ほんとに開くよ！")
-		// TODO ここで詰まってる
-		db, err = gorm.Open("mysql", fmt.Sprintf("root@cloudsql(%s:%s)/%s", config.ProjectID, config.InstanceName, config.DatabaseName))
+		db, err = gorm.Open("mysql", os.Getenv("GENEPSE_MYSQL_CONNECTION"))
 	}
 	return
 }
 func CloseMysql() {
-	db.Close()
+	//db.Close()
+	mdb.Close()
 }
 
 func isDevelop() bool {

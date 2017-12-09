@@ -30,10 +30,20 @@ func returnJSON(w http.ResponseWriter, res Response) error {
 
 func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	query := r.URL.Query()
+	if len(query["limit"]) < 1 {
+		log.Println("limitを指定して下さい。")
+		// TODO 異常系json
+		return
+	}
 	limit, err := strconv.Atoi(query["limit"][0])
 	if err != nil {
 		log.Println("クエリパラメータが不正です", err)
 		// TODO 異常系のjson
+		return
+	}
+	if len(query["offset"]) < 1 {
+		log.Println("offsetを指定して下さい。")
+		// TODO 異常系json
 		return
 	}
 	offset, err := strconv.Atoi(query["offset"][0])

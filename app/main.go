@@ -4,6 +4,7 @@ import (
 	"genepse_api/src/infra/orm"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
@@ -20,9 +21,24 @@ func main() {
 
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
 	gomniauth.SetSecurityKey(globalSecret)
-	gomniauth.WithProviders(
-		facebook.New(facebookClient, clientSecret, "http://localhost:8080/v1/callback/facebook"),
+	var (
+		fbClient       string
+		fbClientSecret string
+		fbCallback     string
 	)
+	if isDevelop() {
+		fbClient = devFacebookClient
+		fbClientSecret = devClientSecret
+		fbCallback = devHost + "/v1/callback/facebook"
+	} else {
+		fbClient = proFacebookClient
+		fbClientSecret = proClientSecret
+		fbCallback = proHost + "/v1/callback/facebook"
+	}
+	gomniauth.WithProviders(
+		facebook.New(fbClient, fbClientSecret, fbCallback),
+	)
+
 	router := httprouter.New()
 	router.GET("/readiness_check", healthCheck)
 	router.GET("/v1/login_url/:provider", login)
@@ -34,4 +50,8 @@ func main() {
 
 	log.Println("Start api server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func isDevelop() bool {
+	return os.Getenv("DEV") == "1"
 }
