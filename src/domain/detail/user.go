@@ -86,6 +86,7 @@ func GetUser(id int) (user *User, err error) {
 		Age:          rawUser.Age,
 		Address:      rawUser.Address,
 		SchoolCareer: rawUser.SchoolCarrer,
+		ActivityBase: rawUser.ActivityBase,
 	}
 	return
 }

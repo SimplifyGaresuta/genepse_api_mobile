@@ -74,7 +74,7 @@ func insertUser() (err error) {
 		User{
 			Name:              "中尾涼",
 			AvatarUrl:         "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14368752_227659240970532_4518352865855223562_n.jpg?oh=64beb0ab4d6b59bc1ab43c3ccf041976&oe=5AD6F164",
-			AttributeId:       1,
+			AttributeId:       2,
 			Overview:          "頑張ります。",
 			Gender:            1,
 			Age:               20,
@@ -84,8 +84,8 @@ func insertUser() (err error) {
 			FacebookAccountId: 1,
 		},
 		User{
-			Name:              "岩見建太",
-			AvatarUrl:         "hey.com",
+			Name:              "田中みな実",
+			AvatarUrl:         "https://i2.wp.com/anincline.com/wp-content/uploads/2015/07/7b3cc41fc129710daee4f623415c93c6.png?fit=400%2C400",
 			AttributeId:       2,
 			Gender:            1,
 			Age:               23,
@@ -136,6 +136,9 @@ func insertSkill() (err error) {
 		Skill{
 			Name: "mysql",
 		},
+		Skill{
+			Name: "php",
+		},
 	}
 	for _, s := range skills {
 		if err = s.Insert(); err != nil {
@@ -156,6 +159,21 @@ func insertSkillUser() (err error) {
 			SkillId:   2,
 			UserId:    1,
 			DispOrder: 2,
+		},
+		SkillUser{
+			SkillId:   3,
+			UserId:    1,
+			DispOrder: 3,
+		},
+		SkillUser{
+			SkillId:   4,
+			UserId:    1,
+			DispOrder: 4,
+		},
+		SkillUser{
+			SkillId:   4,
+			UserId:    2,
+			DispOrder: 1,
 		},
 	}
 	for _, s := range skillUsers {
@@ -178,6 +196,44 @@ func insertProduct() (err error) {
 	}
 	for _, p := range products {
 		if err = p.Insert(); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func insertAward() (err error) {
+	awards := []Award{
+		Award{
+			UserId: 1,
+			Name:   "ISUCON 優勝",
+		},
+		Award{
+			UserId: 1,
+			Name:   "アドテクチャレンジ 優勝",
+		},
+	}
+	for _, a := range awards {
+		if err = a.Insert(); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func insertLicense() (err error) {
+	licenses := []License{
+		License{
+			UserId: 1,
+			Name:   "TOEIC 900点",
+		},
+		License{
+			UserId: 1,
+			Name:   "普通自動車運転免許",
+		},
+	}
+	for _, l := range licenses {
+		if err = l.Insert(); err != nil {
 			return
 		}
 	}
