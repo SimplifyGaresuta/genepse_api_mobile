@@ -1,7 +1,6 @@
 package orm
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
@@ -10,7 +9,6 @@ import (
 )
 
 var db *gorm.DB
-var mdb *sql.DB
 
 func OpenMysql() (err error) {
 	if isDevelop() {
@@ -22,8 +20,7 @@ func OpenMysql() (err error) {
 	return
 }
 func CloseMysql() {
-	//db.Close()
-	mdb.Close()
+	db.Close()
 }
 
 func isDevelop() bool {

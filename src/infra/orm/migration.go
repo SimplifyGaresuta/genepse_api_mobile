@@ -60,10 +60,16 @@ func createTable() {
 		if err := db.CreateTable(&Award{}).Error; err != nil {
 			panic(err)
 		}
+		if err := insertAward(); err != nil {
+			panic(err)
+		}
 	}
 
 	if !db.HasTable(&License{}) {
 		if err := db.CreateTable(&License{}).Error; err != nil {
+			panic(err)
+		}
+		if err := insertLicense(); err != nil {
 			panic(err)
 		}
 	}
