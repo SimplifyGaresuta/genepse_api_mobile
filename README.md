@@ -34,6 +34,14 @@ $ touch app/config.go
 
 内容は中尾に聞いて下さい
 
+## Execute
+
+```
+$ cd [THIS_PROJECT]/app
+$ go build -o genepse
+$ ./genepse
+```
+
 # How to deploy to GAE
 
 gcloudアカウントの認証を行います。
