@@ -1,5 +1,5 @@
 # genepse_api_mobile
-genpseのモバイル用API
+genepseのモバイル用API
 
 # Installation
 
