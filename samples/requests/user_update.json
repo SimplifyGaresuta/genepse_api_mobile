@@ -1,20 +1,3 @@
 {
-  "name": "中尾涼",
-  "avatar_url": "https://storage.googleapis.com/bucket_name/name",
-  "attribute": "Engineer",
-  "skills": ["ruby","go","unity"],
-  "overview": "これまでに複数インターンで頑張りました",
-  "awards": ["AdTech Charenge 優勝", "CrossOverGameJam 優勝", "ジロッカソン terateil賞"],
-  "products": [
-                {"title": "リア充無双", "url": "https://appsto.re/jp/26J0gb.i","image":"https://storage.googleapis.com/bucket_name/name_a"},
-                {"title": "Webクローラー", "url": "https://github.com/ryonakao/netsurfer","image":"https://storage.googleapis.com/bucket_name/name_b"}
-              ],
-  "sns": [
-           {"provider": "facebook", "url": "https://www.facebook.com/nakao.boy"}
-         ],
-  "licenses": ["TOEIC 820点", "FP2級"],
-  "gender": "男性",
-  "age": 20,
-  "address": "埼玉県さいたま市",
-  "school_career": "中央大学商学部"
+  "skills": ["ruby","go","unity"]
 }

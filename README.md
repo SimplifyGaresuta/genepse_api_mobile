@@ -73,32 +73,32 @@ gcloud beta sql connect genepse --user=root
 
 # How to test request
 
-### ユーザー登録
-
-```
-$ curl -H 'Content-Type:application/json' -H 'User-Agent:iPhone' http://localhost:8080/users -d @samples/requests/user_create.json
-```
-
 ### 複数ユーザー取得
 
 ```
-$ curl -H 'User-Agent:iPhone' http://localhost:8080/users?per_page=20&page=1
+$ curl -D - http://localhost:8080/v1/users?limit=20\&offset=0
+```
+
+### 単数ユーザー取得
+
+```
+$ curl -D - http://localhost:8080/v1/users/1
 ```
 
 ### ユーザー更新
 
 ```
-curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/users/1 -d @samples/requests/user_update.json
+$ curl -D - -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/users/1 -d @samples/requests/user_update.json
 ```
 
 ### 作品登録
 
 ```
-$ curl -F user_id=1 -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png http://localhost:8080/v1/products
+$ curl -D - -F user_id=1 -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png http://localhost:8080/v1/products
 ```
 
 ### 作品更新
 
 ```
-$ curl -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png -X PATCH http://localhost:8080/v1/products/1
+$ curl -D - -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png -X PATCH http://localhost:8080/v1/products/1
 ```
