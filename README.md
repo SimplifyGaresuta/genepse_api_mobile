@@ -11,7 +11,30 @@ $ go get github.com/SimplifyGaresuta/genepse_api_mobile
 
 [APIドキュメント](https://docs.google.com/spreadsheets/d/1-q8nE-WqRuiR_29qE8KX-_7tY1fdgvvmYsHC2DYsNOg/edit#gid=0)を御覧ください。
 
-# How to deploy to Google App Engine
+# Setting up your local environment
+
+## Add env variables
+
+```.bash_profile
+export DEV=1
+export MYSQL_USER=[USER]
+export MYSQL_PASS=[PASS]
+export GENEPSE_DBNAME=[DB_NAME]
+export MYSQL_CHARSET=[CHARSET]
+export MYSQL_PARSETIME=True
+export MYSQL_LOC=Local
+```
+
+## Create setting files
+
+```
+$ cd [THIS_PROJECT]
+$ touch app/config.go
+```
+
+内容は中尾に聞いて下さい
+
+# How to deploy to GAE
 
 gcloudアカウントの認証を行います。
 
