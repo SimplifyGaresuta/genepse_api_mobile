@@ -29,6 +29,7 @@ type User struct {
 type Product struct {
 	Title string `json:"title"`
 	URL   string `json:"url"`
+	Image string `json:"image"`
 }
 
 type Sns struct {
@@ -90,16 +91,12 @@ func GetUser(id int) (user *User, err error) {
 }
 
 func getProducts(userID int) (products []Product, err error) {
-	productUsers := orm.ProductUsers{}
-	if err = productUsers.Where("user_id = ?", userID); err != nil {
+	rawProducts := orm.Products{}
+	if err = rawProducts.FindByUser(uint(userID)); err != nil {
 		return
 	}
-	for _, productUser := range productUsers {
-		p := &orm.Product{}
-		if err = p.Find(int(productUser.Model.ID)); err != nil {
-			return
-		}
-		products = append(products, Product{Title: p.Title, URL: p.ReferenceUrl})
+	for _, p := range rawProducts {
+		products = append(products, Product{Title: p.Title, URL: p.ReferenceUrl, Image: p.ImageUrl})
 	}
 	return
 }

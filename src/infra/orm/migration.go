@@ -7,7 +7,7 @@ func Setup() {
 }
 
 func dropTable() {
-	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &ProductUser{}, &Award{}, &License{})
+	db.DropTable(&User{}, &FacebookAccount{}, &Skill{}, &SkillUser{}, &Product{}, &Award{}, &License{})
 }
 
 func createTable() {
@@ -51,10 +51,7 @@ func createTable() {
 		if err := db.CreateTable(&Product{}).Error; err != nil {
 			panic(err)
 		}
-	}
-
-	if !db.HasTable(&ProductUser{}) {
-		if err := db.CreateTable(&ProductUser{}).Error; err != nil {
+		if err := insertProduct(); err != nil {
 			panic(err)
 		}
 	}
@@ -163,6 +160,24 @@ func insertSkillUser() (err error) {
 	}
 	for _, s := range skillUsers {
 		if err = s.Insert(); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func insertProduct() (err error) {
+	products := []Product{
+		Product{
+			Title:        "リア充無双",
+			UserId:       1,
+			ReferenceUrl: "https://appsto.re/jp/26J0gb.i",
+			ImageUrl:     "http://is2.mzstatic.com/image/thumb/Purple111/v4/27/d8/0c/27d80cef-fc79-c8ba-e18c-1b700dc79bc5/source/750x750bb.jpeg",
+			DispOrder:    1,
+		},
+	}
+	for _, p := range products {
+		if err = p.Insert(); err != nil {
 			return
 		}
 	}

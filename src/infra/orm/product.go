@@ -8,9 +8,15 @@ import (
 
 type Product struct {
 	gorm.Model
+	UserId       uint
 	Title        string `gorm:"size:20;not null"`
 	ReferenceUrl string `gorm:"size:300"`
 	ImageUrl     string `gorm:"size:300"`
+	DispOrder    uint   `gorm:"type:bigint"`
+}
+
+func (p *Product) Insert() error {
+	return db.Create(p).Error
 }
 
 func (p *Product) Find(id int) (err error) {
@@ -31,4 +37,12 @@ func (p *Product) FindBy(column string, value interface{}) error {
 	default:
 		return errors.New("カラム名が違います。")
 	}
+}
+
+type Products []Product
+
+func (p *Products) FindByUser(id uint) error {
+	user := &User{}
+	user.Model.ID = id
+	return db.Model(user).Related(p).Error
 }

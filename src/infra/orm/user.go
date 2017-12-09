@@ -16,6 +16,7 @@ type User struct {
 	Overview          string `gorm:"size:500"`
 	Awards            []Award
 	Licenses          []License
+	Products          []Product
 	Gender            int    `gorm:"type:tinyint;not null"`
 	Age               int    `gorm:"type:smallint"`
 	Address           string `gorm:"size:100"`
@@ -24,9 +25,8 @@ type User struct {
 	FacebookAccountId uint   `gorm:"type:bigint"`
 }
 
-func (u *User) Insert() (err error) {
-	err = db.Create(u).Error
-	return
+func (u *User) Insert() error {
+	return db.Create(u).Error
 }
 
 // Find find user matching the given id
