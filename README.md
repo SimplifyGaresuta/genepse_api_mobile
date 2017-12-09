@@ -59,3 +59,15 @@ $ curl -H 'User-Agent:iPhone' http://localhost:8080/users?per_page=20&page=1
 ```
 curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/v1/users/1 -d @samples/requests/user_update.json
 ```
+
+### 作品登録
+
+```
+$ curl -F user_id=1 -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png http://localhost:8080/v1/products
+```
+
+### 作品更新
+
+```
+$ curl -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png -X PATCH http://localhost:8080/v1/products/1
+```
