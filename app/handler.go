@@ -6,12 +6,12 @@ import (
 	"genepse_api/src/domain/detail"
 	"genepse_api/src/domain/feed"
 	"genepse_api/src/domain/registration"
-	"genepse_api/src/infra/objstorage"
 	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/gomniauth"
@@ -103,13 +103,30 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 		return
 	}
 	defer file.Close()
-	imageURL, err := objstorage.Upload(r.Context(), file, objstorage.ProductDir)
-	log.Println("urlは", imageURL)
+	if err := r.ParseForm(); err != nil {
+		log.Println("リクエストbodyが不正です。", err)
+		// TODO 異常系json
+		return
+	}
+	userID, err := strconv.Atoi(strings.Join(r.Form["user_id"], ""))
+	if err != nil {
+		// TODO 異常系json
+		return
+	}
+	creator := &detail.ProductCreator{
+		UserID: userID,
+		Title:  strings.Join(r.Form["title"], ""),
+		URL:    strings.Join(r.Form["url"], ""),
+		Ctx:    r.Context(),
+		File:   file,
+	}
+	response, err := detail.CreateProduct(creator)
 	if err != nil {
 		log.Println("作品登録時にエラー", err)
 		// TODO 異常系json
 		return
 	}
+	returnJSON(w, response)
 }
 func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 

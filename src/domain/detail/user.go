@@ -26,12 +26,6 @@ type User struct {
 	ActivityBase string    `json:"activity_base"`
 }
 
-type Product struct {
-	Title string `json:"title"`
-	URL   string `json:"url"`
-	Image string `json:"image"`
-}
-
 type Sns struct {
 	Provider string `json:"provider"`
 	URL      string `json:"url"`
