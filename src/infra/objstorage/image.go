@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"google.golang.org/appengine"
 	"google.golang.org/appengine/blobstore"
 	"google.golang.org/appengine/image"
 	"google.golang.org/appengine/log"
@@ -23,11 +22,13 @@ func Upload(req *http.Request, file multipart.File) (string, error) {
 	now := t.Format("Mon Jan 2 15:04:05 MST 2006")
 	fmt.Println("今は", now)
 	fmt.Println("ファイルは", file)
-	ctx := appengine.NewContext(req)
+	ctx := req.Context()
+	fmt.Println("コンテキストは", ctx)
 	client, err := storage.NewClient(ctx)
 	//file, err := os.Open("test.jpg")
 	filePath := fmt.Sprintf("%s/%s", now, "test.jpg")
 	blobWriter := client.Bucket(bucket).Object(filePath).NewWriter(ctx)
+	fmt.Println("ライターは", blobWriter)
 	blobWriter.ContentType = "image/jpeg"
 	io.Copy(blobWriter, file)
 	err = blobWriter.Close()

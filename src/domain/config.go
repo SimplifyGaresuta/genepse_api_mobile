@@ -15,7 +15,7 @@ func GetAttribute(id int) string {
 	case DESIGNER:
 		return "Designer"
 	default:
-		return "Unknown"
+		return ""
 	}
 }
 
