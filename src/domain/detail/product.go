@@ -14,11 +14,6 @@ type Product struct {
 	Image string `json:"image"`
 }
 
-// TODO わかりづらい
-type createdProduct struct {
-	ProductId int `json:"product_id"`
-}
-
 type ProductCreator struct {
 	UserID int
 	Title  string
