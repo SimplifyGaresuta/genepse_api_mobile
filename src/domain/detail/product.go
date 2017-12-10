@@ -24,13 +24,13 @@ type ProductOperator struct {
 	ImageURL string
 }
 
-func CreateProduct(c *ProductOperator) (res interface{}, err error) {
-	imageURL, err := uploadImage(c.Ctx, c.File)
+func CreateProduct(p *ProductOperator) (res interface{}, err error) {
+	p.ImageURL, err = uploadImage(p)
 	if err != nil {
 		return
 	}
 
-	productID, err := insertProduct(uint(c.UserID), c.Title, c.URL, imageURL)
+	productID, err := insertProduct(p)
 	if err != nil {
 		return
 	}
@@ -40,41 +40,41 @@ func CreateProduct(c *ProductOperator) (res interface{}, err error) {
 	return
 }
 
-func UpdateProduct(c *ProductOperator) (err error) {
+func UpdateProduct(p *ProductOperator) (err error) {
 	// TODO ない場合はどうしようかな
-	c.ImageURL, err = uploadImage(c.Ctx, c.File)
+	p.ImageURL, err = uploadImage(p)
 	if err != nil {
 		return
 	}
 
-	if err = updateProduct(c); err != nil {
+	if err = updateProduct(p); err != nil {
 		return
 	}
 	return
 }
 
-func uploadImage(ctx context.Context, file multipart.File) (imageURL string, err error) {
-	imageURL, err = objstorage.Upload(ctx, file, objstorage.ProductDir)
+func uploadImage(p *ProductOperator) (imageURL string, err error) {
+	imageURL, err = objstorage.Upload(p.Ctx, p.File, objstorage.ProductDir)
 	return
 }
 
-func insertProduct(userID uint, title, referenceURL, imageURL string) (productID int, err error) {
+func insertProduct(p *ProductOperator) (productID int, err error) {
 	product := &orm.Product{
-		UserId:       userID,
-		Title:        title,
-		ReferenceUrl: referenceURL,
-		ImageUrl:     imageURL,
+		UserId:       uint(p.UserID),
+		Title:        p.Title,
+		ReferenceUrl: p.URL,
+		ImageUrl:     p.ImageURL,
 	}
 	err = product.Insert()
 	productID = int(product.Model.ID)
 	return
 }
 
-func updateProduct(c *ProductOperator) (err error) {
+func updateProduct(p *ProductOperator) (err error) {
 	product := &orm.Product{
-		Title:        c.Title,
-		ReferenceUrl: c.URL,
-		ImageUrl:     c.ImageURL,
+		Title:        p.Title,
+		ReferenceUrl: p.URL,
+		ImageUrl:     p.ImageURL,
 	}
-	return product.Update(uint(c.ID))
+	return product.Update(uint(p.ID))
 }
