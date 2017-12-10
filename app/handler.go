@@ -80,15 +80,13 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	defer r.Body.Close()
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
 		log.Println("idが不正です。")
 		// TODO 異常系json
 		return
 	}
-	// json受け取る
-	defer r.Body.Close()
-	// 更新
 	if err := detail.UpdateUser(uint(id), r.Body); err != nil {
 		log.Println("プロフィール更新時にエラー", err)
 		// TODO 異常系json
@@ -97,14 +95,15 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	defer r.Body.Close()
 	file, _, err := r.FormFile("image")
 	if err != nil {
-		log.Println("作品登録時にエラー", err)
+		log.Println("リクエストbodyが不正です。", err)
 		// TODO 異常系json
 		return
 	}
 	defer file.Close()
-	imageURL, err := objstorage.Upload(r, file)
+	imageURL, err := objstorage.Upload(r, file, "product_images")
 	if err != nil {
 		log.Println("作品登録時にエラー", err)
 		// TODO 異常系json
