@@ -3,13 +3,12 @@ package objstorage
 import (
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
-	"os"
-	"testing"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/appengine"
-	"google.golang.org/appengine/aetest"
 	"google.golang.org/appengine/blobstore"
 	"google.golang.org/appengine/image"
 	"google.golang.org/appengine/log"
@@ -19,13 +18,15 @@ const (
 	bucket = "genepse-186713.appspot.com"
 )
 
-func Upload(req *http.Request) (string, error) {
+func Upload(req *http.Request, file multipart.File) (string, error) {
+	t, _ := time.Parse(time.UnixDate, "Sat Mar  7 11:06:39 PST 2015")
+	now := t.Format("Mon Jan 2 15:04:05 MST 2006")
+	fmt.Println("今は", now)
+	fmt.Println("ファイルは", file)
 	ctx := appengine.NewContext(req)
 	client, err := storage.NewClient(ctx)
-	file, err := os.Open("test.jpg")
-	userName := "tester"
-	fileName := "test.jpg"
-	filePath := fmt.Sprintf("%s/%s", userName, fileName)
+	//file, err := os.Open("test.jpg")
+	filePath := fmt.Sprintf("%s/%s", now, "test.jpg")
 	blobWriter := client.Bucket(bucket).Object(filePath).NewWriter(ctx)
 	blobWriter.ContentType = "image/jpeg"
 	io.Copy(blobWriter, file)
@@ -38,11 +39,4 @@ func Upload(req *http.Request) (string, error) {
 	url, err := image.ServingURL(ctx, blobKey, &opts)
 	log.Infof(ctx, "url", url)
 	return url.String(), err
-}
-
-func TestUpload(t *testing.T) {
-	inst, err := aetest.NewInstance(nil)
-	req, err := inst.NewRequest("GET", "/gophers", nil)
-	url, err := Upload(req)
-	fmt.Printf("test", url, err)
 }

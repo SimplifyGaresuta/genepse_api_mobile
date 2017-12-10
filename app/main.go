@@ -46,6 +46,8 @@ func main() {
 	router.GET("/v1/users", userList)
 	router.GET("/v1/users/:id", userDetail)
 	router.PATCH("/v1/users/:id", userUpdate)
+	router.POST("/v1/products", productCreate)
+	router.PUT("/v1/products/:id", productUpdate)
 	router.PUT("/v1/locations/:id", locationUpdate)
 
 	log.Println("Start api server on :8080")

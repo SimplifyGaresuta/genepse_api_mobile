@@ -6,6 +6,7 @@ import (
 	"genepse_api/src/domain/detail"
 	"genepse_api/src/domain/feed"
 	"genepse_api/src/domain/registration"
+	"genepse_api/src/infra/objstorage"
 	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
 	"log"
@@ -93,6 +94,26 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		// TODO 異常系json
 		return
 	}
+}
+
+func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	file, _, err := r.FormFile("image")
+	if err != nil {
+		log.Println("作品登録時にエラー", err)
+		// TODO 異常系json
+		return
+	}
+	defer file.Close()
+	imageURL, err := objstorage.Upload(r, file)
+	if err != nil {
+		log.Println("作品登録時にエラー", err)
+		// TODO 異常系json
+		return
+	}
+	log.Println("urlは", imageURL)
+}
+func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
 }
 
 func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
