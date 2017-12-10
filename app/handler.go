@@ -103,13 +103,13 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 		return
 	}
 	defer file.Close()
-	imageURL, err := objstorage.Upload(r, file, "product_images")
+	imageURL, err := objstorage.Upload(r.Context(), file, objstorage.ProductDir)
+	log.Println("urlは", imageURL)
 	if err != nil {
 		log.Println("作品登録時にエラー", err)
 		// TODO 異常系json
 		return
 	}
-	log.Println("urlは", imageURL)
 }
 func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
