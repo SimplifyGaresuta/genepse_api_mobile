@@ -1,0 +1,22 @@
+{
+  "id": 3,
+  "name": "中尾涼",
+  "avatar_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14368752_227659240970532_4518352865855223562_n.jpg?oh=64beb0ab4d6b59bc1ab43c3ccf041976\u0026oe=5AD6F164",
+  "attribute": "Business",
+  "skills": null,
+  "overview": "",
+  "awards": null,
+  "products": null,
+  "sns": [
+    {
+      "provider": "facebook",
+      "url": "https://www.facebook.com/nakao.boy"
+    }
+  ],
+  "licenses": null,
+  "gender": "男性",
+  "age": 20,
+  "address": "",
+  "school_career": "",
+  "activity_base": ""
+}
