@@ -4,7 +4,6 @@ import (
 	"context"
 	"genepse_api/src/infra/objstorage"
 	"genepse_api/src/infra/orm"
-	"log"
 	"mime/multipart"
 )
 
@@ -14,17 +13,19 @@ type Product struct {
 	Image string `json:"image"`
 }
 
-type ProductCreator struct {
-	UserID int
-	Title  string
-	URL    string
-	Ctx    context.Context
-	File   multipart.File
+// ProductOperator is 作品を操作する構造体
+type ProductOperator struct {
+	ID       int
+	UserID   int
+	Title    string
+	URL      string
+	Ctx      context.Context
+	File     multipart.File
+	ImageURL string
 }
 
-func CreateProduct(c *ProductCreator) (res interface{}, err error) {
+func CreateProduct(c *ProductOperator) (res interface{}, err error) {
 	imageURL, err := uploadImage(c.Ctx, c.File)
-	log.Println("urlは", imageURL)
 	if err != nil {
 		return
 	}
@@ -36,6 +37,19 @@ func CreateProduct(c *ProductCreator) (res interface{}, err error) {
 	res = struct {
 		ProductID int `json:"product_id"`
 	}{productID}
+	return
+}
+
+func UpdateProduct(c *ProductOperator) (err error) {
+	// TODO ない場合はどうしようかな
+	c.ImageURL, err = uploadImage(c.Ctx, c.File)
+	if err != nil {
+		return
+	}
+
+	if err = updateProduct(c); err != nil {
+		return
+	}
 	return
 }
 
@@ -54,4 +68,13 @@ func insertProduct(userID uint, title, referenceURL, imageURL string) (productID
 	err = product.Insert()
 	productID = int(product.Model.ID)
 	return
+}
+
+func updateProduct(c *ProductOperator) (err error) {
+	product := &orm.Product{
+		Title:        c.Title,
+		ReferenceUrl: c.URL,
+		ImageUrl:     c.ImageURL,
+	}
+	return product.Update(uint(c.ID))
 }

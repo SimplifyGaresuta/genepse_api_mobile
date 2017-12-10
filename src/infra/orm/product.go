@@ -39,6 +39,12 @@ func (p *Product) FindBy(column string, value interface{}) error {
 	}
 }
 
+func (p *Product) Update(id uint) error {
+	before := Product{}
+	before.ID = id
+	return db.Debug().Model(&before).Updates(p).Error
+}
+
 type Products []Product
 
 func (p *Products) FindByUser(id uint) error {

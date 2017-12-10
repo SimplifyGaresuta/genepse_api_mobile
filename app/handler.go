@@ -113,14 +113,14 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 		// TODO 異常系json
 		return
 	}
-	creator := &detail.ProductCreator{
+	operator := &detail.ProductOperator{
 		UserID: userID,
 		Title:  strings.Join(r.Form["title"], ""),
 		URL:    strings.Join(r.Form["url"], ""),
 		Ctx:    r.Context(),
 		File:   file,
 	}
-	response, err := detail.CreateProduct(creator)
+	response, err := detail.CreateProduct(operator)
 	if err != nil {
 		log.Println("作品登録時にエラー", err)
 		// TODO 異常系json
@@ -129,7 +129,40 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	returnJSON(w, response)
 }
 func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	defer r.Body.Close()
+	// TODO imageがあるかどうか確認
+	file, _, err := r.FormFile("image")
+	if err != nil {
+		log.Println("リクエストbodyが不正です。", err)
+		// TODO 異常系json
+		return
+	}
+	defer file.Close()
 
+	id, err := strconv.Atoi(ps.ByName("id"))
+	if err != nil {
+		log.Println("idが不正です。")
+		// TODO 異常系json
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		log.Println("リクエストbodyが不正です。", err)
+		// TODO 異常系json
+		return
+	}
+	operator := &detail.ProductOperator{
+		ID:    id,
+		Title: strings.Join(r.Form["title"], ""),
+		URL:   strings.Join(r.Form["url"], ""),
+		Ctx:   r.Context(),
+		File:  file,
+	}
+	if err := detail.UpdateProduct(operator); err != nil {
+		log.Println("作品更新時にエラー", err)
+		// TODO 異常系json
+		return
+	}
 }
 
 func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

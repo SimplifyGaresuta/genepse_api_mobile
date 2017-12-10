@@ -100,5 +100,5 @@ $ curl -D - -F user_id=1 -F title="リア充無双" -F url="https://appsto.re/jp
 ### 作品更新
 
 ```
-$ curl -D - -F title="リア充無双" -F url="https://appsto.re/jp/26J0gb.i" -F image=@image.png -X PATCH http://localhost:8080/v1/products/1
+$ curl -D - -X PUT -F title="リア充下" -F url="https://heyheyhey" -F image=@Unity_Logo.png  http://localhost:8080/v1/products/1
 ```
