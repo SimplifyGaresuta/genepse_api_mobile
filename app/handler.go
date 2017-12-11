@@ -176,6 +176,23 @@ func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params
 	}
 }
 
+func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	query := r.URL.Query()
+	if len(query["user_id"]) < 1 {
+		log.Println("user_idを指定して下さい。")
+		// TODO 異常系json
+		return
+	}
+	userID := query["user_id"][0]
+	userIDs, err := location.GetNearUsers(userID, 100)
+	if err != nil {
+		log.Println("ユーザー検索時にエラー。", err)
+		// TODO 異常系json
+		return
+	}
+	log.Println("ユーザーidたちは", userIDs)
+}
+
 // TODO gomniauth使用はmiddlewareに任せる
 func login(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	providerName := ps.ByName("provider")

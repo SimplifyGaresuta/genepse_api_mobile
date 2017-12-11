@@ -1,23 +1,13 @@
 package cache
 
-import (
-	"fmt"
+import "github.com/garyburd/redigo/redis"
 
-	"github.com/garyburd/redigo/redis"
-)
-
-func Tes() (err error) {
-	con.Do("SET", "nakao", "ryoryoryo")
-	s, err := redis.String(con.Do("GET", "nakao"))
-	if err != nil {
-		return
-	}
-	fmt.Println("ヴァリューは", s)
+func GeoAdd(key, name string, lat, lon float64) (err error) {
+	_, err = con.Do("GEOADD", key, lon, lat, name)
 	return
 }
 
-func GeoAdd(key, name string, lat, lon float64) (err error) {
-	//GEOADD towers 139.745464 35.658582 "Tokyo Tower"
-	_, err = con.Do("GEOADD", key, lon, lat, name)
+func GeoRadiusByMember(key, name string, distance int) (names []string, err error) {
+	names, err = redis.Strings(con.Do("GEORADIUSBYMEMBER", key, name, distance, "km", "ASC"))
 	return
 }
