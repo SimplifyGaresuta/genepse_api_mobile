@@ -184,13 +184,13 @@ func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	userID := query["user_id"][0]
-	userIDs, err := location.GetNearUsers(userID, 100)
+	res, err := location.GetNearUsers(userID, 100)
 	if err != nil {
-		log.Println("ユーザー検索時にエラー。", err)
+		log.Println("近くのユーザー検索時にエラー。", err)
 		// TODO 異常系json
 		return
 	}
-	log.Println("ユーザーidたちは", userIDs)
+	returnJSON(w, res)
 }
 
 // TODO gomniauth使用はmiddlewareに任せる
