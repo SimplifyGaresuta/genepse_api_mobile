@@ -102,3 +102,9 @@ $ curl -D - -F user_id=1 -F title="リア充無双" -F url="https://appsto.re/jp
 ```
 $ curl -D - -X PUT -F title="アプリA" -F url="https://heyheyhey.com" -F image=@Unity_Logo.png http://localhost:8080/v1/products/1
 ```
+
+### 位置情報更新
+
+```
+$ curl -D - -X PUT -H "Content-Type: application/json" http://localhost:8080/v1/locations/1 -d @samples/requests/location.json
+```

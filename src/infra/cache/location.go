@@ -8,7 +8,7 @@ import (
 
 func Tes() (err error) {
 	con.Do("SET", "nakao", "ryoryoryo")
-	s, err := redis.String(con.Do("GET", "hey"))
+	s, err := redis.String(con.Do("GET", "nakao"))
 	if err != nil {
 		return
 	}
