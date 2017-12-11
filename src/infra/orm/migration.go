@@ -128,22 +128,22 @@ func insertFacebookAccount() (err error) {
 func insertSkill() (err error) {
 	skills := []Skill{
 		Skill{
-			Name: "ruby",
+			Name: "Ruby",
 		},
 		Skill{
-			Name: "java",
+			Name: "Java",
 		},
 		Skill{
-			Name: "python",
+			Name: "Python",
 		},
 		Skill{
-			Name: "go",
+			Name: "Go",
 		},
 		Skill{
-			Name: "mysql",
+			Name: "MySQL",
 		},
 		Skill{
-			Name: "php",
+			Name: "PHP",
 		},
 		Skill{
 			Name: "AE",
@@ -152,7 +152,7 @@ func insertSkill() (err error) {
 			Name: "営業",
 		},
 		Skill{
-			Name: "自然言語処理",
+			Name: "NLP",
 		},
 	}
 	for _, s := range skills {
