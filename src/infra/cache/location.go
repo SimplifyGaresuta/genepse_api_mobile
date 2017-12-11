@@ -15,3 +15,9 @@ func Tes() (err error) {
 	fmt.Println("ヴァリューは", s)
 	return
 }
+
+func GeoAdd(key, name string, lat, lon float64) (err error) {
+	//GEOADD towers 139.745464 35.658582 "Tokyo Tower"
+	_, err = con.Do("GEOADD", key, lon, lat, name)
+	return
+}

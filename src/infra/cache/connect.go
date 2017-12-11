@@ -4,6 +4,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
+// TODO 環境変数に
 const (
 	Host = "127.0.0.1"
 	Port = "6379"

@@ -5,7 +5,6 @@ import (
 	"genepse_api/src/infra/cache"
 	"io"
 	"io/ioutil"
-	"log"
 )
 
 type Location struct {
@@ -13,13 +12,14 @@ type Location struct {
 	Longitude float64 `json:"longitude"`
 }
 
-func UpdateLocation(userID int, r io.ReadCloser) (err error) {
+const key = "locations"
+
+func UpdateLocation(userID string, r io.ReadCloser) (err error) {
 	location, err := decode(r)
 	if err != nil {
 		return
 	}
-	log.Println("位置は", location)
-	if err = cache.Tes(); err != nil {
+	if err = cache.GeoAdd(key, userID, location.Latitude, location.Longitude); err != nil {
 		return
 	}
 	return
