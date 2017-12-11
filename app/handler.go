@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"genepse_api/src/domain/detail"
 	"genepse_api/src/domain/feed"
+	"genepse_api/src/domain/location"
 	"genepse_api/src/domain/registration"
 	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
@@ -167,6 +168,18 @@ func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 
 func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer r.Body.Close()
+	id, err := strconv.Atoi(ps.ByName("id"))
+	if err != nil {
+		log.Println("idが不正です。")
+		// TODO 異常系json
+		return
+	}
+
+	if err := location.UpdateLocation(id, r.Body); err != nil {
+		log.Println("位置情報更新時にエラー", err)
+		// TODO 異常系json
+		return
+	}
 }
 
 // TODO gomniauth使用はmiddlewareに任せる

@@ -20,6 +20,7 @@ func main() {
 	orm.Setup()
 
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
+	// TODO リファクタリング
 	gomniauth.SetSecurityKey(globalSecret)
 	var (
 		fbClient       string
