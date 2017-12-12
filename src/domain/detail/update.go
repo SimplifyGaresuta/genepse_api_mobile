@@ -59,6 +59,7 @@ func mappingUser(id uint, user *User) (rawUser *orm.User, err error) {
 		Age:          user.Age,
 		Address:      user.Address,
 		SchoolCarrer: user.SchoolCareer,
+		ActivityBase: user.ActivityBase,
 	}
 	if user.Attribute != "" {
 		rawUser.AttributeId = domain.GetAttributeID(user.Attribute)
@@ -69,6 +70,7 @@ func mappingUser(id uint, user *User) (rawUser *orm.User, err error) {
 	return
 }
 
+// TODO 空配列だった場合全部消す
 func updateAward(userID uint, awardNames []string) (err error) {
 	if len(awardNames) >= 1 {
 		awards := orm.Awards{}
@@ -85,6 +87,7 @@ func updateAward(userID uint, awardNames []string) (err error) {
 	return
 }
 
+// TODO 空配列だった場合全部消す
 func updateLicense(userID uint, licenseNames []string) (err error) {
 	if len(licenseNames) >= 1 {
 		licenses := orm.Licenses{}
@@ -101,6 +104,7 @@ func updateLicense(userID uint, licenseNames []string) (err error) {
 	return
 }
 
+// TODO 空配列だった場合全部消す
 func updateSkills(userID uint, skillNames []string) (err error) {
 	if len(skillNames) >= 1 {
 		skillUsers := orm.SkillUsers{}
