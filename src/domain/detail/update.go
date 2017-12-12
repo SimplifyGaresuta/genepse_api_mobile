@@ -77,6 +77,11 @@ func updateAward(userID uint, awardNames []string) (err error) {
 		if err = awards.BatchDelete("user_id = ?", userID); err != nil {
 			return
 		}
+		// TODO 消したい場合は空文字を入れる実装だが、変える
+		if awardNames[0] == "" {
+			return
+		}
+
 		for _, awardName := range awardNames {
 			award := &orm.Award{UserId: userID, Name: awardName}
 			if err = award.Insert(); err != nil {
@@ -94,6 +99,11 @@ func updateLicense(userID uint, licenseNames []string) (err error) {
 		if err = licenses.BatchDelete("user_id = ?", userID); err != nil {
 			return
 		}
+		// TODO 消したい場合は空文字を入れる実装だが、変える
+		if licenseNames[0] == "" {
+			return
+		}
+
 		for _, name := range licenseNames {
 			license := &orm.License{UserId: userID, Name: name}
 			if err = license.Insert(); err != nil {
@@ -111,6 +121,11 @@ func updateSkills(userID uint, skillNames []string) (err error) {
 		if err = skillUsers.BatchDelete("user_id = ?", userID); err != nil {
 			return
 		}
+		// TODO 消したい場合は空文字を入れる実装だが、変える
+		if skillNames[0] == "" {
+			return
+		}
+
 		dispOrder := 1
 		for _, skillName := range skillNames {
 			skill := orm.Skill{}
