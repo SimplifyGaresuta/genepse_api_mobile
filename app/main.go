@@ -1,6 +1,7 @@
 package main
 
 import (
+	"genepse_api/src/infra/cache"
 	"genepse_api/src/infra/orm"
 	"log"
 	"net/http"
@@ -18,13 +19,13 @@ func main() {
 	}
 	defer orm.CloseMysql()
 	orm.Setup()
-	/*
-		err = cache.DialRedis()
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer cache.CloseRedis()
-	*/
+
+	err = cache.DialRedis()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer cache.CloseRedis()
+
 	// setup gomniauth facebook.New(クライアントID, 秘密の値, コールバックパス)
 	// TODO リファクタリング
 	gomniauth.SetSecurityKey(globalSecret)

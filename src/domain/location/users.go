@@ -46,8 +46,9 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 
 		// TODO 必要カラムだけselect
 		rawUser := &orm.User{}
+		// 位置情報だけ残ってるけどユーザーが削除されている可能性があるから
 		if err = rawUser.Find(i); err != nil {
-			return
+			continue
 		}
 		// TODO 表示項目決まり次第ここにマッピングする
 		user := User{

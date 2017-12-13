@@ -108,3 +108,9 @@ $ curl -D - -X PUT -F title="アプリA" -F url="https://heyheyhey.com" -F image
 ```
 $ curl -D - -X PUT -H "Content-Type: application/json" http://localhost:8080/v1/locations/1 -d @samples/requests/location.json
 ```
+
+### 近距離ユーザー取得
+
+```
+$ curl -D - http://localhost:8080/v1/near_users?user_id=1
+```
