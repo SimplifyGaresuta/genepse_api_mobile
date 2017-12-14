@@ -3,6 +3,7 @@ package location
 import (
 	"genepse_api/src/infra/cache"
 	"genepse_api/src/infra/orm"
+	"log"
 	"strconv"
 )
 
@@ -17,6 +18,7 @@ type User struct {
 func GetNearUsers(userID string, distance int) (response *Response, err error) {
 	ids, err := getUserIDs(userID, distance)
 	if err != nil {
+		log.Println("georadiusbymember時にエラー", cache.GetErr())
 		return
 	}
 

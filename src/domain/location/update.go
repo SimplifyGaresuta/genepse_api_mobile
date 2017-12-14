@@ -5,6 +5,7 @@ import (
 	"genepse_api/src/infra/cache"
 	"io"
 	"io/ioutil"
+	"log"
 )
 
 type Location struct {
@@ -20,6 +21,7 @@ func UpdateLocation(userID string, r io.ReadCloser) (err error) {
 		return
 	}
 	if err = cache.GeoAdd(key, userID, location.Latitude, location.Longitude); err != nil {
+		log.Println("geoadd時にエラー", cache.GetErr())
 		return
 	}
 	return

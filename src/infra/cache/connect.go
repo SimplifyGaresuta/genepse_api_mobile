@@ -1,23 +1,32 @@
 package cache
 
 import (
+	"os"
+
 	"github.com/garyburd/redigo/redis"
 )
 
-// TODO 環境変数に
-const (
-	Host = "127.0.0.1"
-	//Host = "35.200.63.13"
-	Port = "6379"
-)
-
+var addr string
 var con redis.Conn
 
 func DialRedis() (err error) {
-	con, err = redis.Dial("tcp", Host+":"+Port)
+	if isDevelop() {
+		addr = "127.0.0.1:6379"
+	} else {
+		addr = "10.146.0.2:6379"
+	}
+	con, err = redis.Dial("tcp", addr)
 	return
 }
 
 func CloseRedis() {
 	con.Close()
+}
+
+func GetErr() error {
+	return con.Err()
+}
+
+func isDevelop() bool {
+	return os.Getenv("DEV") == "1"
 }
