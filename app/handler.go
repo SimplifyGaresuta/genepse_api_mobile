@@ -98,12 +98,9 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer r.Body.Close()
 	file, _, err := r.FormFile("image")
-	if err != nil {
-		log.Println("リクエストbodyが不正です。", err)
-		// TODO 異常系json
-		return
+	if err == nil {
+		defer file.Close()
 	}
-	defer file.Close()
 	if err := r.ParseForm(); err != nil {
 		log.Println("リクエストbodyが不正です。", err)
 		// TODO 異常系json

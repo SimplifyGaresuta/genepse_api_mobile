@@ -25,9 +25,12 @@ type ProductOperator struct {
 }
 
 func CreateProduct(p *ProductOperator) (res interface{}, err error) {
-	p.ImageURL, err = uploadImage(p)
-	if err != nil {
-		return
+	// TODO トランザクション
+	if p.File != nil {
+		p.ImageURL, err = uploadImage(p)
+		if err != nil {
+			return
+		}
 	}
 
 	productID, err := insertProduct(p)
