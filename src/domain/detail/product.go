@@ -44,10 +44,12 @@ func CreateProduct(p *ProductOperator) (res interface{}, err error) {
 }
 
 func UpdateProduct(p *ProductOperator) (err error) {
-	// TODO ない場合はどうしようかな
-	p.ImageURL, err = uploadImage(p)
-	if err != nil {
-		return
+	// TODO トランザクション
+	if p.File != nil {
+		p.ImageURL, err = uploadImage(p)
+		if err != nil {
+			return
+		}
 	}
 
 	if err = updateProduct(p); err != nil {

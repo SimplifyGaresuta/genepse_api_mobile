@@ -128,14 +128,10 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 }
 func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer r.Body.Close()
-	// TODO imageがあるかどうか確認
 	file, _, err := r.FormFile("image")
-	if err != nil {
-		log.Println("リクエストbodyが不正です。", err)
-		// TODO 異常系json
-		return
+	if err == nil {
+		defer file.Close()
 	}
-	defer file.Close()
 
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
