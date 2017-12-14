@@ -1,7 +1,12 @@
 package registration
 
 import (
+	"context"
+	"fmt"
+	"genepse_api/src/infra/objstorage"
 	"genepse_api/src/infra/orm"
+	"io"
+	"net/http"
 )
 
 type Login struct {
@@ -26,7 +31,7 @@ func Registered(provider string, accountID string) bool {
 }
 
 // Register はuserを登録します
-func Register(userName string, avatarURL string, accountID string, provider string) (userID uint, err error) {
+func Register(userName string, avatarURL string, accountID string, provider string, ctx context.Context) (userID uint, err error) {
 	var facebookID uint
 	// TODO 抽象化
 	switch provider {
@@ -39,8 +44,19 @@ func Register(userName string, avatarURL string, accountID string, provider stri
 			return
 		}
 		facebookID = f.Model.ID
+
+		avatarURL = fmt.Sprintf("https://graph.facebook.com/%s/picture?width=9999", accountID)
 	}
-	// TODO 画像をcloudStorageに入れて、AvatarUrlにそのurl入れる
+	// ダウンロード
+	r, err := downloadImage(avatarURL)
+	if err != nil {
+		return
+	}
+	avatarURL, err = uploadImage(r, ctx)
+	if err != nil {
+		return
+	}
+
 	u := &orm.User{
 		Name:              userName,
 		AvatarUrl:         avatarURL,
@@ -51,6 +67,22 @@ func Register(userName string, avatarURL string, accountID string, provider stri
 		return
 	}
 	userID = u.Model.ID
+	return
+}
+
+func downloadImage(u string) (io.ReadCloser, error) {
+	res, err := http.Get(u)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func uploadImage(r io.ReadCloser, ctx context.Context) (imageURL string, err error) {
+	imageURL, err = objstorage.Upload(ctx, r, objstorage.ProfileDir)
+	if err != nil {
+		return
+	}
 	return
 }
 

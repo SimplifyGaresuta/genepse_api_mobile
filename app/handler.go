@@ -233,7 +233,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 			return
 		}
 	} else { // 登録
-		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName)
+		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName, r.Context())
 		if err != nil {
 			log.Println(err)
 			// TODO 異常系json

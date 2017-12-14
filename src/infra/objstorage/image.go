@@ -4,14 +4,13 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"mime/multipart"
 	"time"
 
 	"cloud.google.com/go/storage"
 )
 
 // TODO (アイデアベース)imageを構造体にする
-func Upload(ctx context.Context, file multipart.File, directory string) (imageURL string, err error) {
+func Upload(ctx context.Context, file io.Reader, directory string) (imageURL string, err error) {
 	t := time.Now()
 	now := t.Format("Mon Jan 2 15:04:05 MST 2006")
 	client, err := storage.NewClient(ctx)
