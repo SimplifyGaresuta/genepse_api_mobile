@@ -11,6 +11,12 @@ $ go get github.com/SimplifyGaresuta/genepse_api_mobile
 
 [APIドキュメント](https://docs.google.com/spreadsheets/d/1-q8nE-WqRuiR_29qE8KX-_7tY1fdgvvmYsHC2DYsNOg/edit#gid=0)を御覧ください。
 
+# Environment
+
+- Go 1.8.3
+- Redis 3.2.0
+- MySQL 5.5.58
+
 # Setting up your local environment
 
 ## Add env variables
