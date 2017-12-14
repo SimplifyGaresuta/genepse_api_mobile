@@ -8,6 +8,7 @@ import (
 )
 
 type Product struct {
+	ID    uint   `json:"id"`
 	Title string `json:"title"`
 	URL   string `json:"url"`
 	Image string `json:"image"`

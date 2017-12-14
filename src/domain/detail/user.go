@@ -91,7 +91,7 @@ func getProducts(userID int) (products []Product, err error) {
 		return
 	}
 	for _, p := range rawProducts {
-		products = append(products, Product{Title: p.Title, URL: p.ReferenceUrl, Image: p.ImageUrl})
+		products = append(products, Product{ID: p.Model.ID, Title: p.Title, URL: p.ReferenceUrl, Image: p.ImageUrl})
 	}
 	return
 }
