@@ -189,7 +189,7 @@ func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	userID := query["user_id"][0]
-	res, err := location.GetNearUsers(userID, 100)
+	res, err := location.GetNearUsers(userID, 10000)
 	if err != nil {
 		log.Println("近くのユーザー検索時にエラー。", err)
 		w.WriteHeader(500)
