@@ -30,11 +30,11 @@ func UpdateUser(id uint, r io.ReadCloser) error {
 	if err := updateLicense(id, user.Licenses); err != nil {
 		return err
 	}
-	// アソシエーションしたら消す
+	// TODO アソシエーションしたら消す
 	if err := updateSkills(id, user.Skills); err != nil {
 		return err
 	}
-	// ---------------------------------------------------------
+	// ---------------------------------------------------------------------
 	return nil
 }
 

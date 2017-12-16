@@ -87,8 +87,8 @@ func createTable() {
 func insertUser() (err error) {
 	users := []User{
 		User{
-			Name:              "中尾涼",
-			AvatarUrl:         "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14368752_227659240970532_4518352865855223562_n.jpg?oh=64beb0ab4d6b59bc1ab43c3ccf041976&oe=5AD6F164",
+			Name:              "スティーブ・ジョブズ",
+			AvatarUrl:         "https://i.gzn.jp/img/2016/01/06/blinq/a08.jpg",
 			AttributeId:       2,
 			Overview:          "頑張ります。",
 			Gender:            1,
@@ -106,6 +106,18 @@ func insertUser() (err error) {
 			Gender:            1,
 			Age:               23,
 			FacebookAccountId: 2,
+		},
+		User{
+			Name:              "石原さとみ",
+			AvatarUrl:         "https://i.pinimg.com/736x/17/54/d9/1754d97f559c4fc0dc1504ad59032140--satomi-ishihara-smartphone.jpg",
+			AttributeId:       2,
+			Overview:          "いえいえいえいえいえいえいえい！！！",
+			Gender:            1,
+			Age:               23,
+			Address:           "埼玉県さいたま市",
+			SchoolCarrer:      "明星大学",
+			ActivityBase:      "恵比寿",
+			FacebookAccountId: 3,
 		},
 	}
 	for _, u := range users {
@@ -125,6 +137,10 @@ func insertFacebookAccount() (err error) {
 		FacebookAccount{
 			AccountId: "291289898398981",
 			MypageUrl: "eowioew.com",
+		},
+		FacebookAccount{
+			AccountId: "981239829389822",
+			MypageUrl: "heyeheyehye.com",
 		},
 	}
 	for _, f := range facebooks {
