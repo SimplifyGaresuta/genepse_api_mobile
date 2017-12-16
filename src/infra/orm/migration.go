@@ -29,6 +29,12 @@ func createTable() {
 		}
 	}
 
+	if !db.HasTable(&TwitterAccount{}) {
+		if err := db.CreateTable(&TwitterAccount{}).Error; err != nil {
+			panic(err)
+		}
+	}
+
 	if !db.HasTable(&Skill{}) {
 		if err := db.CreateTable(&Skill{}).Error; err != nil {
 			panic(err)
