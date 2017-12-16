@@ -75,6 +75,15 @@ func (u *User) ProviderURL(p Provider) (providerURL string, err error) {
 		providerURL = p.GetMypageURL()
 		return
 	case "twitter":
+		i := u.TwitterAccountId
+		if i == 0 {
+			err = errors.New("twitterが登録されていません")
+			return
+		}
+		if err = p.Find(int(i)); err != nil {
+			return
+		}
+		providerURL = p.GetMypageURL()
 		return
 	default:
 		return
