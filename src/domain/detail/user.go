@@ -48,6 +48,11 @@ func GetUser(id int) (user *User, err error) {
 	if err != nil {
 		log.Println("ユーザーのfacebook取得時にエラー", err)
 	}
+	tw := &orm.TwitterAccount{}
+	twitterURL, err := rawUser.ProviderURL(tw)
+	if err != nil {
+		log.Println("ユーザーのtwitter取得時にエラー", err)
+	}
 
 	// TODO awardとlicenseで抽象化
 	awardNames, err := getAwards(id)
@@ -75,7 +80,7 @@ func GetUser(id int) (user *User, err error) {
 		Awards:    awardNames,
 		Products:  products,
 		// TODO 抽象化
-		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookURL}},
+		Sns:          []Sns{Sns{Provider: fb.ProviderName(), URL: facebookURL}, Sns{Provider: tw.ProviderName(), URL: twitterURL}},
 		Licenses:     licenseNames,
 		Gender:       gender,
 		Age:          rawUser.Age,
