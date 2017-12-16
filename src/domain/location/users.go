@@ -81,6 +81,11 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 		if err != nil {
 			log.Println(err)
 		}
+		tw := &orm.TwitterAccount{}
+		twURL, err := rawUser.ProviderURL(tw)
+		if err != nil {
+			log.Println(err)
+		}
 		// TODO 表示項目決まり次第ここにマッピングする
 		user := User{
 			ID:        i,
@@ -90,7 +95,7 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 			Skills:    skillNames,
 			Distance:  distance,
 			// TODO 抽象化
-			Sns: []Sns{Sns{Provider: fb.ProviderName(), URL: fbURL}, Sns{Provider: "twitter", URL: ""}},
+			Sns: []Sns{Sns{Provider: fb.ProviderName(), URL: fbURL}, Sns{Provider: tw.ProviderName(), URL: twURL}},
 		}
 		users = append(users, user)
 	}

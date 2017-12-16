@@ -33,6 +33,9 @@ func createTable() {
 		if err := db.CreateTable(&TwitterAccount{}).Error; err != nil {
 			panic(err)
 		}
+		if err := insertTwitterAccount(); err != nil {
+			panic(err)
+		}
 	}
 
 	if !db.HasTable(&Skill{}) {
@@ -94,6 +97,7 @@ func insertUser() (err error) {
 			SchoolCarrer:      "中央大学",
 			ActivityBase:      "新宿",
 			FacebookAccountId: 1,
+			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "田中みな実",
@@ -124,6 +128,21 @@ func insertFacebookAccount() (err error) {
 		},
 	}
 	for _, f := range facebooks {
+		if err = f.Insert(); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func insertTwitterAccount() (err error) {
+	twitters := []TwitterAccount{
+		TwitterAccount{
+			AccountId: "nakaoboy",
+			MypageUrl: "https://twitter.com/nakaoboy",
+		},
+	}
+	for _, f := range twitters {
 		if err = f.Insert(); err != nil {
 			return
 		}

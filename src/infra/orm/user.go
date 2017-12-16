@@ -23,6 +23,7 @@ type User struct {
 	SchoolCarrer      string `gorm:"size:500"`
 	ActivityBase      string `gorm:"size:100"`
 	FacebookAccountId uint   `gorm:"type:bigint"`
+	TwitterAccountId  uint   `gorm:"type:bigint"`
 }
 
 func (u *User) Insert() error {
