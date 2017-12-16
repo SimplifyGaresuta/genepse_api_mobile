@@ -5,6 +5,7 @@ import (
 	"genepse_api/src/infra/cache"
 	"genepse_api/src/infra/orm"
 	"log"
+	"math"
 	"strconv"
 )
 
@@ -53,9 +54,16 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 		if id == userID {
 			continue
 		}
+		d, err := cache.GeoDist(key, userID, id, "m")
+		distance := int(math.Floor(d))
+		if err != nil {
+			log.Println(err)
+			continue
+		}
 		i, err = strconv.Atoi(id)
 		if err != nil {
-			return
+			log.Println(err)
+			continue
 		}
 
 		// TODO 必要カラムだけselect
@@ -81,9 +89,9 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 			AvatarURL: rawUser.AvatarUrl,
 			Attribute: domain.GetAttribute(rawUser.AttributeId),
 			Skills:    skillNames,
-			Distance:  0,
+			Distance:  distance,
 			// TODO 抽象化
-			Sns: []Sns{Sns{Provider: "facebook", URL: fbURL}, Sns{Provider: "twitter", URL: ""}},
+			Sns: []Sns{Sns{Provider: fb.ProviderName(), URL: fbURL}, Sns{Provider: "twitter", URL: ""}},
 		}
 		users = append(users, user)
 	}
