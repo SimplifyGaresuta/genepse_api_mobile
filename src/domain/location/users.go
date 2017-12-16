@@ -54,8 +54,7 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 		if id == userID {
 			continue
 		}
-		d, err := cache.GeoDist(key, userID, id, "m")
-		distance := int(math.Floor(d))
+		distance, err := getDistance(userID, id, "m")
 		if err != nil {
 			log.Println(err)
 			continue
@@ -112,4 +111,9 @@ func getSkills(userID int) (skillNames []string, err error) {
 		skillNames = append(skillNames, skill.Name)
 	}
 	return
+}
+
+func getDistance(member1, member2, unit string) (int, error) {
+	d, err := cache.GeoDist(key, member1, member2, unit)
+	return int(math.Floor(d)), err
 }
