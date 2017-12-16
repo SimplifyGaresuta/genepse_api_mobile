@@ -43,7 +43,8 @@ func GetUser(id int) (user *User, err error) {
 	}
 
 	// TODO 抽象化
-	facebookID, err := getFacebookURL(id)
+	fb := &orm.FacebookAccount{}
+	facebookURL, err := rawUser.ProviderURL(fb)
 	if err != nil {
 		log.Println("ユーザーのfacebook取得時にエラー", err)
 	}
@@ -74,7 +75,7 @@ func GetUser(id int) (user *User, err error) {
 		Awards:    awardNames,
 		Products:  products,
 		// TODO 抽象化
-		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookID}},
+		Sns:          []Sns{Sns{Provider: "facebook", URL: facebookURL}},
 		Licenses:     licenseNames,
 		Gender:       gender,
 		Age:          rawUser.Age,
@@ -136,7 +137,7 @@ func getLicenses(userID int) (licenseNames []string, err error) {
 	return
 }
 
-// アソシエーションしたら直す
+// TODO アソシエーションしたら直す
 func getSkills(userID int) (skillNames []string, err error) {
 	skillUsers := orm.SkillUsers{}
 	if err = skillUsers.Where("user_id = ?", userID); err != nil {

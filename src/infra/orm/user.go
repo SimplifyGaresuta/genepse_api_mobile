@@ -59,6 +59,27 @@ func (u *User) Update(id uint) error {
 	return db.Debug().Model(&before).Updates(u).Error
 }
 
+// TODO 上手く抽象化。各providerテーブルにユーザーidもたせるかも
+func (u *User) ProviderURL(p Provider) (providerURL string, err error) {
+	switch p.ProviderName() {
+	case "facebook":
+		i := u.FacebookAccountId
+		if i == 0 {
+			err = errors.New("facebookが登録されていません")
+			return
+		}
+		if err = p.Find(int(i)); err != nil {
+			return
+		}
+		providerURL = p.GetMypageURL()
+		return
+	case "twitter":
+		return
+	default:
+		return
+	}
+}
+
 type Users []User
 
 func (u *Users) LimitOffset(limit int, offset int) (err error) {

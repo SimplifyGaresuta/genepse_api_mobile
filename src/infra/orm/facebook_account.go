@@ -39,6 +39,14 @@ func (f *FacebookAccount) GetID() uint {
 	return f.Model.ID
 }
 
+func (f *FacebookAccount) GetAccountID() string {
+	return f.AccountId
+}
+
+func (f *FacebookAccount) GetMypageURL() string {
+	return f.MypageUrl
+}
+
 func (f *FacebookAccount) ProviderName() string {
 	return "facebook"
 }
