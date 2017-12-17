@@ -12,6 +12,7 @@ type User struct {
 	ID           int       `json:"id"`
 	Name         string    `json:"name"`
 	AvatarURL    string    `json:"avatar_url"`
+	CoverURL     string    `json:"cover_url"`
 	Attribute    string    `json:"attribute"`
 	Skills       []string  `json:"skills"`
 	Overview     string    `json:"overview"`
@@ -74,6 +75,7 @@ func GetUser(id int) (user *User, err error) {
 		ID:        int(rawUser.Model.ID),
 		Name:      rawUser.Name,
 		AvatarURL: rawUser.AvatarUrl,
+		CoverURL:  rawUser.CoverUrl,
 		Attribute: domain.GetAttribute(rawUser.AttributeId),
 		Skills:    skillNames,
 		Overview:  rawUser.Overview,

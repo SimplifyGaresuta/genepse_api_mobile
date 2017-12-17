@@ -12,6 +12,7 @@ type User struct {
 	gorm.Model
 	Name              string `gorm:"size:20;not null"`
 	AvatarUrl         string `gorm:"size:300"`
+	CoverUrl          string `gorm:"size:300"`
 	AttributeId       int    `gorm:"type:smallint;default:1;not null"`
 	Overview          string `gorm:"size:500"`
 	Awards            []Award
