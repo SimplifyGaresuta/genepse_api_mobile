@@ -45,7 +45,7 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	limit, err := strconv.Atoi(query["limit"][0])
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "limitの値が不正です。"})
+		returnJSON(w, exception{Message: "limitの値が不正です。" + err.Error()})
 		return
 	}
 	if len(query["offset"]) < 1 {
@@ -56,14 +56,14 @@ func userList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	offset, err := strconv.Atoi(query["offset"][0])
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "offsetの値が不正です。"})
+		returnJSON(w, exception{Message: "offsetの値が不正です。" + err.Error()})
 		return
 	}
 	response, err := feed.GetResponse(limit, offset)
 	if err != nil {
 		log.Println("フィード取得時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "フィード取得時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "フィード取得時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 	returnJSON(w, response)
@@ -73,14 +73,14 @@ func userDetail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "idが不正です。"})
+		returnJSON(w, exception{Message: "idが不正です。" + err.Error()})
 		return
 	}
 	user, err := detail.GetUser(id)
 	if err != nil {
 		log.Println("プロフィール取得時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "プロフィール取得時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "プロフィール取得時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 	returnJSON(w, user)
@@ -91,13 +91,13 @@ func userUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "idが不正です。"})
+		returnJSON(w, exception{Message: "idが不正です。" + err.Error()})
 		return
 	}
 	if err := detail.UpdateUser(uint(id), r.Body); err != nil {
 		log.Println("プロフィール更新時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "プロフィール更新時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "プロフィール更新時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 }
@@ -111,13 +111,13 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	if err := r.ParseForm(); err != nil {
 		log.Println("リクエストbodyが不正です。", err)
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "リクエストボディが不正です。"})
+		returnJSON(w, exception{Message: "リクエストボディが不正です。" + err.Error()})
 		return
 	}
 	userID, err := strconv.Atoi(strings.Join(r.Form["user_id"], ""))
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "user_idの値が不正です。"})
+		returnJSON(w, exception{Message: "user_idの値が不正です。" + err.Error()})
 		return
 	}
 	operator := &detail.ProductOperator{
@@ -131,7 +131,7 @@ func productCreate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	if err != nil {
 		log.Println("作品登録時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "作品登録時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "作品登録時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 	returnJSON(w, response)
@@ -146,13 +146,13 @@ func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	id, err := strconv.Atoi(ps.ByName("id"))
 	if err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "user_idの値が不正です。"})
+		returnJSON(w, exception{Message: "user_idの値が不正です。" + err.Error()})
 		return
 	}
 
 	if err := r.ParseForm(); err != nil {
 		w.WriteHeader(400)
-		returnJSON(w, exception{Message: "リクエストボディが不正です。"})
+		returnJSON(w, exception{Message: "リクエストボディが不正です。" + err.Error()})
 		return
 	}
 	operator := &detail.ProductOperator{
@@ -165,7 +165,7 @@ func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	if err := detail.UpdateProduct(operator); err != nil {
 		log.Println("作品更新時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "作品更新時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "作品更新時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 }
@@ -176,7 +176,7 @@ func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params
 	if err := location.UpdateLocation(id, r.Body); err != nil {
 		log.Println("位置情報更新時にエラー", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "位置情報更新時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "位置情報更新時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 }
@@ -193,7 +193,7 @@ func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err != nil {
 		log.Println("近くのユーザー検索時にエラー。", err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "近くのユーザー検索時にエラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "近くのユーザー検索時にエラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 	returnJSON(w, res)
@@ -228,7 +228,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(500)
-		returnJSON(w, exception{Message: "ユーザー取得時エラー。しばらくお待ち下さい。"})
+		returnJSON(w, exception{Message: "ユーザー取得時エラー。しばらくお待ち下さい。" + err.Error()})
 		return
 	}
 	accountID := user.IDForProvider(providerName)
@@ -244,7 +244,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(500)
-			returnJSON(w, exception{Message: fmt.Sprintf("%sのアカウントid取得時にエラー", providerName)})
+			returnJSON(w, exception{Message: fmt.Sprintf("%sのアカウントid取得時にエラー%s", providerName, err.Error())})
 			return
 		}
 	} else { // 登録
@@ -252,7 +252,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		if err != nil {
 			log.Println(err)
 			w.WriteHeader(500)
-			returnJSON(w, exception{Message: "ユーザー登録時にエラー。しばらくお待ち下さい。"})
+			returnJSON(w, exception{Message: "ユーザー登録時にエラー。しばらくお待ち下さい。" + err.Error()})
 			return
 		}
 	}
