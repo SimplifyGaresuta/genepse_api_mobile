@@ -91,6 +91,10 @@ func (u *User) ProviderURL(p Provider) (providerURL string, err error) {
 	}
 }
 
+func (u *User) RawQuery(query string, args ...interface{}) error {
+	return db.Raw(query, args...).Scan(u).Error
+}
+
 type Users []User
 
 // TODO この辺gormの仕様読んで、各クエリメソッドを部品化

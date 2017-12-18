@@ -125,6 +125,12 @@ func insertUser() (err error) {
 			Age:               18,
 			FacebookAccountId: 4,
 		},
+		User{
+			Name:              "スキルマン",
+			Gender:            1,
+			Age:               25,
+			FacebookAccountId: 5,
+		},
 	}
 	for _, u := range users {
 		if err = u.Insert(); err != nil {
@@ -137,7 +143,7 @@ func insertUser() (err error) {
 func insertFacebookAccount() (err error) {
 	facebooks := []FacebookAccount{
 		FacebookAccount{
-			AccountId: "429618797441241",
+			AccountId: "722787328199898",
 			MypageUrl: "fb.com",
 		},
 		FacebookAccount{
@@ -151,6 +157,10 @@ func insertFacebookAccount() (err error) {
 		FacebookAccount{
 			AccountId: "283987237992971",
 			MypageUrl: "ieieieiei.com",
+		},
+		FacebookAccount{
+			AccountId: "032883728982749",
+			MypageUrl: "weowwafei.com",
 		},
 	}
 	for _, f := range facebooks {
@@ -240,6 +250,16 @@ func insertSkillUser() (err error) {
 			SkillId:   4,
 			UserId:    2,
 			DispOrder: 1,
+		},
+		SkillUser{
+			SkillId:   1,
+			UserId:    5,
+			DispOrder: 1,
+		},
+		SkillUser{
+			SkillId:   4,
+			UserId:    5,
+			DispOrder: 2,
 		},
 	}
 	for _, s := range skillUsers {

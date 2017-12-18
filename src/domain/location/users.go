@@ -28,6 +28,11 @@ type Sns struct {
 	URL      string `json:"url"`
 }
 
+const query = `
+select distinct u.id, u.name, u.avatar_url, u.attribute_id
+from users as u left join skill_users as s on u.id=s.user_id
+where u.id=? and (u.attribute_id != 0 or u.overview != "" or s.user_id is not null);`
+
 func GetNearUsers(userID string, distance int) (response *Response, err error) {
 	ids, err := getUserIDs(userID, distance)
 	if err != nil {
@@ -68,7 +73,7 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 		// TODO 必要カラムだけselect
 		rawUser := &orm.User{}
 		// 位置情報だけ残ってるけどユーザーが削除されている可能性があるから
-		if err = rawUser.Find(i); err != nil {
+		if err = rawUser.RawQuery(query, i); err != nil {
 			continue
 		}
 		skillNames, err := getSkills(i)
