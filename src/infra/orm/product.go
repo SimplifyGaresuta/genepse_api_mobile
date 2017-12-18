@@ -9,7 +9,7 @@ import (
 type Product struct {
 	gorm.Model
 	UserId       uint
-	Title        string `gorm:"size:20;not null"`
+	Title        string `gorm:"size:20"`
 	ReferenceUrl string `gorm:"size:300"`
 	ImageUrl     string `gorm:"size:300"`
 	DispOrder    uint   `gorm:"type:bigint"`
