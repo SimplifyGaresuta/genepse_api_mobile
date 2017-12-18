@@ -13,7 +13,7 @@ type User struct {
 	Name              string `gorm:"size:20;not null"`
 	AvatarUrl         string `gorm:"size:300"`
 	CoverUrl          string `gorm:"size:300"`
-	AttributeId       int    `gorm:"type:smallint;default:1;not null"`
+	AttributeId       int    `gorm:"type:smallint"`
 	Overview          string `gorm:"size:500"`
 	Awards            []Award
 	Licenses          []License
@@ -93,6 +93,17 @@ func (u *User) ProviderURL(p Provider) (providerURL string, err error) {
 
 type Users []User
 
+// TODO この辺gormの仕様読んで、各クエリメソッドを部品化
 func (u *Users) LimitOffset(limit int, offset int) (err error) {
 	return db.Limit(limit).Offset(offset).Find(u).Error
+}
+
+/*
+func (u *Users) LimitOffsetWhere(limit, offset int, query string, args ...interface{}) error {
+	return db.Where(query, args...).Limit(limit).Offset(offset).Find(u).Error
+}
+*/
+
+func (u *Users) RawQuery(query string, args ...interface{}) error {
+	return db.Raw(query, args...).Scan(u).Error
 }

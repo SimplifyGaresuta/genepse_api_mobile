@@ -1,6 +1,5 @@
 {
   "sns": [
-    {"provider": "facebook", "url": "https://www.facebook.com/nakao.boy"},
     {"provider": "twitter", "url": "https://twitter.com/nakaoboy"}
   ]
 }
