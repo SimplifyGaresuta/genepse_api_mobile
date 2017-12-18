@@ -119,6 +119,12 @@ func insertUser() (err error) {
 			ActivityBase:      "恵比寿",
 			FacebookAccountId: 3,
 		},
+		User{
+			Name:              "未設定マン",
+			Gender:            1,
+			Age:               18,
+			FacebookAccountId: 4,
+		},
 	}
 	for _, u := range users {
 		if err = u.Insert(); err != nil {
@@ -141,6 +147,10 @@ func insertFacebookAccount() (err error) {
 		FacebookAccount{
 			AccountId: "981239829389822",
 			MypageUrl: "heyeheyehye.com",
+		},
+		FacebookAccount{
+			AccountId: "283987237992971",
+			MypageUrl: "ieieieiei.com",
 		},
 	}
 	for _, f := range facebooks {
