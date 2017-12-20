@@ -547,7 +547,7 @@ func insertSkillUser() (err error) {
 		SkillUser{
 			SkillId:   19,
 			UserId:    1,
-			DispOrder: 1,
+			DispOrder: 4,
 		},
 		SkillUser{
 			SkillId:   36,
@@ -562,11 +562,6 @@ func insertSkillUser() (err error) {
 		SkillUser{
 			SkillId:   45,
 			UserId:    2,
-			DispOrder: 3,
-		},
-		SkillUser{
-			SkillId:   19,
-			UserId:    3,
 			DispOrder: 3,
 		},
 		SkillUser{
@@ -1065,11 +1060,127 @@ func insertAward() (err error) {
 	awards := []Award{
 		Award{
 			UserId: 1,
-			Name:   "ISUCON 優勝",
+			Name:   "ワークスアプリケーションズ入社パス",
 		},
 		Award{
-			UserId: 1,
+			UserId: 2,
+			Name:   "isucon優勝",
+		},
+		Award{
+			UserId: 2,
+			Name:   "AtCoder 2017春季大会準優勝",
+		},
+		Award{
+			UserId: 3,
+			Name:   "株式会社Abic 最優秀インターン",
+		},
+		Award{
+			UserId: 4,
+			Name:   "GoodDesign賞受賞",
+		},
+		Award{
+			UserId: 4,
+			Name:   "PM準優勝",
+		},
+		Award{
+			UserId: 5,
+			Name:   "ジロッカソンteratail賞",
+		},
+		Award{
+			UserId: 6,
+			Name:   "ジラフ敢闘賞",
+		},
+		Award{
+			UserId: 7,
+			Name:   "メルカリBOLDインターン最優秀賞",
+		},
+		Award{
+			UserId: 7,
+			Name:   "CAハッカソン優勝",
+		},
+		Award{
+			UserId: 8,
+			Name:   "DC優秀者",
+		},
+		Award{
+			UserId: 8,
+			Name:   "GoodDesign賞受賞",
+		},
+		Award{
+			UserId: 9,
+			Name:   "JPhacks優勝",
+		},
+		Award{
+			UserId: 10,
+			Name:   "CAデザイン優勝",
+		},
+		Award{
+			UserId: 10,
+			Name:   "GoodDesign賞受賞",
+		},
+		Award{
+			UserId: 11,
+			Name:   "Top corder 世界100位",
+		},
+		Award{
+			UserId: 12,
+			Name:   "VC Conference 入賞",
+		},
+		Award{
+			UserId: 13,
+			Name:   "CAデザイン優勝",
+		},
+		Award{
+			UserId: 13,
+			Name:   "GoodDesign賞受賞",
+		},
+		Award{
+			UserId: 18,
+			Name:   "メルカリデザイン入賞",
+		},
+		Award{
+			UserId: 18,
+			Name:   "未踏エンジニア",
+		},
+		Award{
+			UserId: 20,
+			Name:   "DeNAディレクターインターン最優秀賞",
+		},
+		Award{
+			UserId: 20,
+			Name:   "メディアConference 最優秀賞",
+		},
+		Award{
+			UserId: 21,
+			Name:   "教育マインド賞",
+		},
+		Award{
+			UserId: 21,
+			Name:   "Life is Tech 最高メンター賞",
+		},
+		Award{
+			UserId: 21,
+			Name:   "BCGインターン最優秀賞",
+		},
+		Award{
+			UserId: 22,
 			Name:   "アドテクチャレンジ 優勝",
+		},
+		Award{
+			UserId: 23,
+			Name:   "マーケットconference 最優秀賞",
+		},
+		Award{
+			UserId: 24,
+			Name:   "ICPC アジア30位",
+		},
+		Award{
+			UserId: 26,
+			Name:   "TC登壇",
+		},
+		Award{
+			UserId: 28,
+			Name:   "メルカリデザイン賞 入賞",
 		},
 	}
 	for _, a := range awards {
