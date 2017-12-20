@@ -1039,20 +1039,24 @@ func insertSkillUser() (err error) {
 }
 
 func insertProduct() (err error) {
-	products := []Product{
-		Product{
-			Title:        "リア充無双",
-			UserId:       1,
-			ReferenceUrl: "https://appsto.re/jp/26J0gb.i",
-			ImageUrl:     "http://is2.mzstatic.com/image/thumb/Purple111/v4/27/d8/0c/27d80cef-fc79-c8ba-e18c-1b700dc79bc5/source/750x750bb.jpeg",
+	for i := 1; i < 30; i++ {
+		product := Product{
+			UserId:       uint(i),
+			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
+			ImageUrl:     "https://storage.googleapis.com/genepse-186713.appspot.com/product_images/Sun Dec 10 06:05:44 UTC 2017.jpg",
 			DispOrder:    1,
-		},
-	}
-	for _, p := range products {
-		if err = p.Insert(); err != nil {
+		}
+		if err = product.Insert(); err != nil {
 			return
 		}
 	}
+
+	/*	for _, p := range products {
+			if err = p.Insert(); err != nil {
+				return
+			}
+		}
+	*/
 	return
 }
 
@@ -1195,11 +1199,131 @@ func insertLicense() (err error) {
 	licenses := []License{
 		License{
 			UserId: 1,
-			Name:   "TOEIC 900点",
+			Name:   "英検1級",
 		},
 		License{
 			UserId: 1,
-			Name:   "普通自動車運転免許",
+			Name:   "ダイダラボッチ交友認定証",
+		},
+		License{
+			UserId: 2,
+			Name:   "応用情報技術者",
+		},
+		License{
+			UserId: 3,
+			Name:   "ネットワークスペシャリスト",
+		},
+		License{
+			UserId: 6,
+			Name:   "プロジェクションマッピング師範級",
+		},
+		License{
+			UserId: 6,
+			Name:   "スペイン語検定2級",
+		},
+		License{
+			UserId: 8,
+			Name:   "イラストレーター検定１級",
+		},
+		License{
+			UserId: 9,
+			Name:   "基本情報技術者",
+		},
+		License{
+			UserId: 10,
+			Name:   "毛筆5段",
+		},
+		License{
+			UserId: 10,
+			Name:   "硬筆８段",
+		},
+		License{
+			UserId: 11,
+			Name:   "Ruby Gold",
+		},
+		License{
+			UserId: 12,
+			Name:   "ダイダラボッチ交友認定証",
+		},
+		License{
+			UserId: 12,
+			Name:   "英検1級",
+		},
+		License{
+			UserId: 13,
+			Name:   "硬筆8段",
+		},
+		License{
+			UserId: 13,
+			Name:   "フォトショ検定2級",
+		},
+		License{
+			UserId: 14,
+			Name:   "スペイン語検定2級",
+		},
+		License{
+			UserId: 14,
+			Name:   "プロジェクションマッピング師範級",
+		},
+		License{
+			UserId: 15,
+			Name:   "フォトショ検定2級",
+		},
+		License{
+			UserId: 15,
+			Name:   "イラストレーター検定1級",
+		},
+		License{
+			UserId: 17,
+			Name:   "Googleアナリスト",
+		},
+		License{
+			UserId: 17,
+			Name:   "スペイン語検定2級",
+		},
+		License{
+			UserId: 15,
+			Name:   "ダイダラポッチ交友認定証",
+		},
+		License{
+			UserId: 19,
+			Name:   "データベーススペシャリスト",
+		},
+		License{
+			UserId: 20,
+			Name:   "英検1級",
+		},
+		License{
+			UserId: 21,
+			Name:   "プロジェクションマッピング師範級",
+		},
+		License{
+			UserId: 22,
+			Name:   "LPIC2",
+		},
+		License{
+			UserId: 22,
+			Name:   "Ruby Gold",
+		},
+		License{
+			UserId: 23,
+			Name:   "Googleアナリスト資格",
+		},
+		License{
+			UserId: 23,
+			Name:   "スペイン語検定2級",
+		},
+		License{
+			UserId: 24,
+			Name:   "公認会計士",
+		},
+		License{
+			UserId: 24,
+			Name:   "基本情報技術者",
+		},
+		License{
+			UserId: 29,
+			Name:   "毛筆4段",
 		},
 	}
 	for _, l := range licenses {
