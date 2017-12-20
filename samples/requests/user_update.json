@@ -1,5 +1,3 @@
 {
-  "sns": [
-    {"provider": "twitter", "url": "アカウント名"}
-  ]
+  "age": 30
 }
