@@ -19,7 +19,7 @@ const (
 	query               = `
 	select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.overview
   from users as u left join skill_users as s on u.id=s.user_id
-  where u.attribute_id != 0 or u.overview != "" or s.user_id is not null
+  where u.attribute_id != 0 and u.overview != "" and s.user_id is not null
 	limit ? offset ?;
 `
 )

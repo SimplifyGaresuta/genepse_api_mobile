@@ -1,3 +1,5 @@
-{
+{"sns": [
+    {"provider": "twitter", "url": "nakaoboy"}
+  ],
   "age": 30
 }
