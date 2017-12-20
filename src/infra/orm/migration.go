@@ -2,7 +2,7 @@ package orm
 
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	//dropTable()
+	dropTable()
 	createTable()
 }
 
@@ -87,7 +87,7 @@ func createTable() {
 func insertUser() (err error) {
 	users := []User{
 		User{
-			Name:              "金谷 陽平",
+			Name:              "大河原 拓巳",
 			AvatarUrl:         "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/fr/cp0/e15/q65/21151682_1723058597990412_7991828349134415504_n.jpg?efg=eyJpIjoidCJ9&oh=d48b585ff9ff2275e19eb8fc706bd144&oe=5AB7058A",
 			AttributeId:       1,
 			Overview:          "事業開発を3度ほど経験し、うち１つを1年で年商3,000万円規模のビジネスに成長させました。主にディレクター、営業としての役割を担っています。最近新たに教育・HR領域でエンジニアと一緒に会社つくろうとしてます。興味のあるエンジニアさん話しましょう！",
@@ -126,7 +126,7 @@ func insertUser() (err error) {
 			TwitterAccountId:  1,
 		},
 		User{
-			Name:              "小倉 大知",
+			Name:              "水野 慎也",
 			AvatarUrl:         "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/fr/cp0/e15/q65/22308709_121914455194047_494685754163737983_n.jpg?efg=eyJpIjoidCJ9&oh=a760b9275caed4a26ed967f28860ec57&oe=5AB80091",
 			AttributeId:       3,
 			Overview:          "UI/UXデザインを専門としています。これまで株式会社XYZのUIデザインのインターンで優勝、株式会社サイバーでもインターン優勝経験があります。他にはvivitの頂点デザインコンテストにおいて、グラフィック部門で最優秀賞を受賞しました。ブランディングやパッケージデザインの経験もあります。みなさんとともによりよいサービスを提供できるよう全力を尽くしたいと思います！",
@@ -191,7 +191,7 @@ func insertUser() (err error) {
 			TwitterAccountId:  1,
 		},
 		User{
-			Name:              "岩見 建汰",
+			Name:              "徳永 貴大",
 			AvatarUrl:         "https://scontent-nrt1-1.xx.fbcdn.net/v/t1.0-9/fr/cp0/e15/q65/20046511_1355640164553806_3463604895971062116_n.jpg?efg=eyJpIjoidCJ9&oh=1817aab0965ae39698ee1cff5d1743f6&oe=5AB33901",
 			AttributeId:       2,
 			Overview:          "フロントもサーバーサイドも幅広くできます。最近はSwiftも勉強してiOSアプリをいくつかリリースしました。北海道に住んでいますが、東京に行くこともたくさんあるので、ぜひいろんな人とお話ししてみたいです。",
