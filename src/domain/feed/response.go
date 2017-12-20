@@ -4,7 +4,6 @@ import (
 	"errors"
 	"genepse_api/src/domain"
 	"genepse_api/src/infra/orm"
-	"log"
 )
 
 // Response is フィードで返すjsonオブジェクト
@@ -17,7 +16,7 @@ type Response struct {
 const (
 	numberOfSkills uint = 3
 	query               = `
-	select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.overview
+	select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.overview, u.activity_base
   from users as u left join skill_users as s on u.id=s.user_id
   where u.attribute_id != 0 and u.overview != "" and s.user_id is not null
 	limit ? offset ?;
@@ -27,9 +26,7 @@ const (
 // GetResponse return response
 func GetResponse(limit, offset int) (response *Response, err error) {
 	rawUsers := orm.Users{}
-	// TODO 必要なカラムだけselectする
 	if err = rawUsers.RawQuery(query, limit, offset); err != nil {
-		log.Println("heyheyhey")
 		return
 	}
 	if len(rawUsers) < 1 {
@@ -44,12 +41,13 @@ func GetResponse(limit, offset int) (response *Response, err error) {
 			break
 		}
 		user := User{
-			ID:        u.Model.ID,
-			Name:      u.Name,
-			AvatarURL: u.AvatarUrl,
-			Attribute: domain.GetAttribute(u.AttributeId),
-			Skills:    skills,
-			Overview:  u.Overview,
+			ID:           u.Model.ID,
+			Name:         u.Name,
+			AvatarURL:    u.AvatarUrl,
+			Attribute:    domain.GetAttribute(u.AttributeId),
+			Skills:       skills,
+			Overview:     u.Overview,
+			ActivityBase: u.ActivityBase,
 		}
 		users = append(users, user)
 	}

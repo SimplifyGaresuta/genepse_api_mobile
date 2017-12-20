@@ -8,12 +8,13 @@ type Users []User
 
 // User is 画面で表示するユーザー情報
 type User struct {
-	ID        uint     `json:"id"`
-	Name      string   `json:"name"`
-	AvatarURL string   `json:"avatar_url"`
-	Attribute string   `json:"attribute"`
-	Skills    []string `json:"skills"`
-	Overview  string   `json:"overview"`
+	ID           uint     `json:"id"`
+	Name         string   `json:"name"`
+	AvatarURL    string   `json:"avatar_url"`
+	Attribute    string   `json:"attribute"`
+	Skills       []string `json:"skills"`
+	Overview     string   `json:"overview"`
+	ActivityBase string   `json:"activity_base"`
 }
 
 // nextExist return 与えられたidの次にレコードがあるか
