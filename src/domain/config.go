@@ -43,6 +43,8 @@ func GetGender(id int) string {
 		return "男性"
 	case WOMAN:
 		return "女性"
+	case 0:
+		return ""
 	default:
 		return "その他"
 	}
