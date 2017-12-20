@@ -74,7 +74,7 @@ $ gcloud app deploy
 Google Cloud Platform Console で、右上隅にある Cloud Shell アイコンをクリックします。
 
 ```
-gcloud beta sql connect genepse --user=root
+$ gcloud beta sql connect genepse --user=root
 ```
 
 # How to test request

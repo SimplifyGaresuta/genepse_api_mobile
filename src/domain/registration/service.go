@@ -38,6 +38,7 @@ func Register(userName string, avatarURL string, accountID string, provider stri
 	case "facebook":
 		f := &orm.FacebookAccount{
 			AccountId: accountID,
+			MypageUrl: "https://www.facebook.com/" + accountID,
 		}
 		err = f.Insert()
 		if err != nil {
