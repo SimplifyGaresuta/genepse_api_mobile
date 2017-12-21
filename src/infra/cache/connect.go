@@ -9,7 +9,7 @@ import (
 
 var (
 	addr string
-	con  redis.Conn
+	//con  redis.Conn
 	pool *redis.Pool
 )
 
@@ -27,18 +27,20 @@ func SetPool() {
 	return
 }
 
-func SetConn() {
-	con = pool.Get()
+func GetConn() redis.Conn {
+	return pool.Get()
 }
 
+/*
 func CloseConn() {
 	con.Close()
 }
-
+*/
+/*
 func GetErr() error {
 	return con.Err()
 }
-
+*/
 func isDevelop() bool {
 	return os.Getenv("DEV") == "1"
 }

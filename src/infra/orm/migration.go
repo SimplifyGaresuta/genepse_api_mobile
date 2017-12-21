@@ -4,7 +4,7 @@ import "fmt"
 
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	//dropTable()
+	dropTable()
 	createTable()
 }
 

@@ -6,6 +6,8 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 type Location struct {
@@ -15,13 +17,14 @@ type Location struct {
 
 const key = "locations"
 
-func UpdateLocation(userID string, r io.ReadCloser) (err error) {
+func UpdateLocation(con *redis.Conn, userID string, r io.ReadCloser) (err error) {
 	location, err := decode(r)
 	if err != nil {
 		return
 	}
-	if err = cache.GeoAdd(key, userID, location.Latitude, location.Longitude); err != nil {
-		log.Println("geoadd時にエラー", cache.GetErr())
+	if err = cache.GeoAdd(con, key, userID, location.Latitude, location.Longitude); err != nil {
+		c := *con
+		log.Println("geoadd時にエラー", c.Err())
 		return
 	}
 	return

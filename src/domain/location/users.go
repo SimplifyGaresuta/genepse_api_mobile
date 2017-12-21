@@ -7,6 +7,8 @@ import (
 	"log"
 	"math"
 	"strconv"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 type Response struct {
@@ -33,14 +35,15 @@ select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.facebook_account_i
 from users as u left join skill_users as s on u.id=s.user_id
 where u.id=? and (u.attribute_id != 0 and u.overview != "" and s.user_id is not null);`
 
-func GetNearUsers(userID string, distance int) (response *Response, err error) {
-	ids, err := getUserIDs(userID, distance)
+func GetNearUsers(con *redis.Conn, userID string, distance int) (response *Response, err error) {
+	ids, err := getUserIDs(con, userID, distance)
 	if err != nil {
-		log.Println("georadiusbymember時にエラー", cache.GetErr())
+		c := *con
+		log.Println("georadiusbymember時にエラー", c.Err())
 		return
 	}
 
-	users, err := getUsers(ids, userID)
+	users, err := getUsers(con, ids, userID)
 
 	response = &Response{
 		Users: users,
@@ -48,18 +51,18 @@ func GetNearUsers(userID string, distance int) (response *Response, err error) {
 	return
 }
 
-func getUserIDs(userID string, distance int) (userIDs []string, err error) {
-	userIDs, err = cache.GeoRadiusByMember(key, userID, distance)
+func getUserIDs(con *redis.Conn, userID string, distance int) (userIDs []string, err error) {
+	userIDs, err = cache.GeoRadiusByMember(con, key, userID, distance)
 	return
 }
 
-func getUsers(ids []string, userID string) (users []User, err error) {
+func getUsers(con *redis.Conn, ids []string, userID string) (users []User, err error) {
 	var i int
 	for _, id := range ids {
 		if id == userID {
 			continue
 		}
-		distance, err := getDistance(userID, id, "m")
+		distance, err := getDistance(con, userID, id, "m")
 		if err != nil {
 			log.Println(err)
 			continue
@@ -129,7 +132,7 @@ func getSkills(userID, limit int) (skillNames []string, err error) {
 	return
 }
 
-func getDistance(member1, member2, unit string) (int, error) {
-	d, err := cache.GeoDist(key, member1, member2, unit)
+func getDistance(con *redis.Conn, member1, member2, unit string) (int, error) {
+	d, err := cache.GeoDist(con, key, member1, member2, unit)
 	return int(math.Floor(d)), err
 }

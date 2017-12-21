@@ -175,9 +175,9 @@ func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params
 	defer r.Body.Close()
 	id := ps.ByName("id")
 
-	cache.SetConn()
-	defer cache.CloseConn()
-	if err := location.UpdateLocation(id, r.Body); err != nil {
+	con := cache.GetConn()
+	defer con.Close()
+	if err := location.UpdateLocation(&con, id, r.Body); err != nil {
 		log.Println("位置情報更新時にエラー", err)
 		w.WriteHeader(500)
 		returnJSON(w, exception{Message: "位置情報更新時にエラー。しばらくお待ち下さい。" + err.Error()})
@@ -194,9 +194,9 @@ func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 	userID := query["user_id"][0]
 
-	cache.SetConn()
-	defer cache.CloseConn()
-	res, err := location.GetNearUsers(userID, 10000)
+	con := cache.GetConn()
+	defer con.Close()
+	res, err := location.GetNearUsers(&con, userID, 10000)
 	if err != nil {
 		log.Println("近くのユーザー検索時にエラー。", err)
 		w.WriteHeader(500)
