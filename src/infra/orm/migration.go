@@ -1,5 +1,7 @@
 package orm
 
+import "fmt"
+
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
 	//dropTable()
@@ -1064,7 +1066,7 @@ func insertProduct() (err error) {
 		product := Product{
 			UserId:       uint(i),
 			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
-			ImageUrl:     "https://storage.googleapis.com/genepse-186713.appspot.com/product_images/Sun Dec 10 06:05:44 UTC 2017.jpg",
+			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i),
 			DispOrder:    1,
 		}
 		if err = product.Insert(); err != nil {
@@ -1072,12 +1074,30 @@ func insertProduct() (err error) {
 		}
 	}
 
-	/*	for _, p := range products {
-			if err = p.Insert(); err != nil {
-				return
-			}
+	for i := 16; i < 30; i++ {
+		product := Product{
+			UserId:       uint(i),
+			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
+			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i+14),
+			DispOrder:    2,
 		}
-	*/
+		if err = product.Insert(); err != nil {
+			return
+		}
+	}
+
+	for i := 10; i < 30; i++ {
+		product := Product{
+			UserId:       uint(i),
+			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
+			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i),
+			DispOrder:    2,
+		}
+		if err = product.Insert(); err != nil {
+			return
+		}
+	}
+
 	return
 }
 
