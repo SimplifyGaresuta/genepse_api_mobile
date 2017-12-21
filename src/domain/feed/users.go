@@ -2,6 +2,7 @@ package feed
 
 import (
 	"genepse_api/src/infra/orm"
+	"log"
 )
 
 type Users []User
@@ -19,8 +20,16 @@ type User struct {
 
 // nextExist return 与えられたidの次にレコードがあるか
 func nextExist(id int) bool {
+	q := `select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.overview, u.activity_base
+from users as u left join skill_users as s on u.id=s.user_id
+where u.id > ? and u.attribute_id != 0 and u.overview != "" and s.user_id is not null
+limit 1;`
 	user := orm.User{}
-	user.Find(id + 1)
+	if err := user.RawQuery(q, id); err != nil {
+		log.Println(err)
+		return false
+	}
+	log.Printf("ユーザーは%#v", user)
 	return user.Model.ID != 0
 }
 
