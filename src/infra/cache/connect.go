@@ -2,24 +2,40 @@ package cache
 
 import (
 	"os"
+	"time"
 
 	"github.com/garyburd/redigo/redis"
 )
 
-var addr string
-var con redis.Conn
+var (
+	addr string
+	con  redis.Conn
+	pool *redis.Pool
+)
 
 func DialRedis() (err error) {
-	if isDevelop() {
-		addr = "127.0.0.1:6379"
-	} else {
-		addr = "10.146.0.2:6379"
-	}
-	con, err = redis.Dial("tcp", addr)
 	return
 }
 
-func CloseRedis() {
+func SetPool() {
+	if isDevelop() {
+		addr = devAddr
+	} else {
+		addr = proAddr
+	}
+	pool = &redis.Pool{
+		MaxIdle:     3,
+		IdleTimeout: 240 * time.Second,
+		Dial:        func() (redis.Conn, error) { return redis.Dial("tcp", addr) },
+	}
+	return
+}
+
+func SetConn() {
+	con = pool.Get()
+}
+
+func CloseConn() {
 	con.Close()
 }
 

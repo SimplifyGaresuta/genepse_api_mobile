@@ -7,6 +7,7 @@ import (
 	"genepse_api/src/domain/feed"
 	"genepse_api/src/domain/location"
 	"genepse_api/src/domain/registration"
+	"genepse_api/src/infra/cache"
 	"genepse_api/src/infra/orm"
 	"genepse_api/src/middleware"
 	"log"
@@ -173,6 +174,9 @@ func productUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 func locationUpdate(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	defer r.Body.Close()
 	id := ps.ByName("id")
+
+	cache.SetConn()
+	defer cache.CloseConn()
 	if err := location.UpdateLocation(id, r.Body); err != nil {
 		log.Println("位置情報更新時にエラー", err)
 		w.WriteHeader(500)
@@ -189,6 +193,9 @@ func nearUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	userID := query["user_id"][0]
+
+	cache.SetConn()
+	defer cache.CloseConn()
 	res, err := location.GetNearUsers(userID, 10000)
 	if err != nil {
 		log.Println("近くのユーザー検索時にエラー。", err)
