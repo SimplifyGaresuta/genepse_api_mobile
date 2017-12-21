@@ -1074,11 +1074,11 @@ func insertProduct() (err error) {
 		}
 	}
 
-	for i := 16; i < 30; i++ {
+	for i := 1; i < 30; i++ {
 		product := Product{
 			UserId:       uint(i),
 			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
-			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i+14),
+			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i+29),
 			DispOrder:    2,
 		}
 		if err = product.Insert(); err != nil {
@@ -1086,11 +1086,11 @@ func insertProduct() (err error) {
 		}
 	}
 
-	for i := 10; i < 30; i++ {
+	for i := 21; i < 24; i++ {
 		product := Product{
 			UserId:       uint(i),
 			ReferenceUrl: "https://kentaiwami.jp/portfolio/",
-			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i),
+			ImageUrl:     fmt.Sprintf("https://storage.googleapis.com/genepse-186713.appspot.com/product_images/works_%d.jpg", i+38),
 			DispOrder:    2,
 		}
 		if err = product.Insert(); err != nil {
