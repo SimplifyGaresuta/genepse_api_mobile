@@ -13,10 +13,6 @@ var (
 	pool *redis.Pool
 )
 
-func DialRedis() (err error) {
-	return
-}
-
 func SetPool() {
 	if isDevelop() {
 		addr = devAddr
