@@ -2,7 +2,7 @@ package orm
 
 // Setup is 環境構築の最初に行うべきDBのセットアップ
 func Setup() {
-	//dropTable()
+	dropTable()
 	createTable()
 }
 
@@ -123,7 +123,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "東洋大学経営学部経営学科(2020年卒業予定)",
 			ActivityBase:      "半蔵門",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "水野 慎也",
@@ -162,7 +161,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "筑波大学情報理工学部データサイエンス学科(2018年卒業予定)",
 			ActivityBase:      "八王子",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "高橋 一生",
@@ -228,7 +226,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "東京大学文学部英文学科(2021年卒業予定)",
 			ActivityBase:      "日比谷",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "中村 太一",
@@ -241,7 +238,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "青山学院大学工学部物理学科(2020年卒業予定)",
 			ActivityBase:      "恵比寿",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "山田 太郎",
@@ -254,7 +250,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "東洋大学経営学部経営学科(2020年卒業予定)",
 			ActivityBase:      "大手町",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "福山 徹",
@@ -307,7 +302,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "筑波大学情報理工学部データサイエンス学科(2018年卒業予定)",
 			ActivityBase:      "六本木",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "太田 聡一",
@@ -333,7 +327,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "青山学院大学工学部物理学科(2020年卒業予定)",
 			ActivityBase:      "高円寺",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "橘 春香",
@@ -463,7 +456,6 @@ func insertUser() (err error) {
 			SchoolCarrer:      "東京造形大学デザイン学科(2020年卒業予定)",
 			ActivityBase:      "信濃町",
 			FacebookAccountId: 1,
-			TwitterAccountId:  1,
 		},
 		User{
 			Name:              "吉田 剛",

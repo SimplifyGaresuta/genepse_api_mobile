@@ -29,7 +29,7 @@ type Sns struct {
 }
 
 const query = `
-select distinct u.id, u.name, u.avatar_url, u.attribute_id
+select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.facebook_account_id, u.twitter_account_id
 from users as u left join skill_users as s on u.id=s.user_id
 where u.id=? and (u.attribute_id != 0 and u.overview != "" and s.user_id is not null);`
 
@@ -76,7 +76,7 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 		if err = rawUser.RawQuery(query, i); err != nil {
 			continue
 		}
-		skillNames, err := getSkills(i)
+		skillNames, err := getSkills(i, 3)
 		if err != nil {
 			log.Println("ユーザーのスキル取得時にエラー", err)
 		}
@@ -108,10 +108,16 @@ func getUsers(ids []string, userID string) (users []User, err error) {
 }
 
 // TODO アソシエーションしたら直す
-func getSkills(userID int) (skillNames []string, err error) {
+func getSkills(userID, limit int) (skillNames []string, err error) {
 	skillUsers := orm.SkillUsers{}
-	if err = skillUsers.Where("user_id = ?", userID); err != nil {
-		return
+	if limit == 0 {
+		if err = skillUsers.Where("user_id = ?", userID); err != nil {
+			return
+		}
+	} else {
+		if err = skillUsers.WhereLimit("user_id = ? and disp_order <= ?", 3, userID, limit); err != nil {
+			return
+		}
 	}
 	for _, skillUser := range skillUsers {
 		skill := &orm.Skill{}
