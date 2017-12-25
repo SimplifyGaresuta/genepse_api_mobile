@@ -241,28 +241,40 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	accountID := user.IDForProvider(providerName)
 
 	var userID uint
-	if registration.Registered(providerName, accountID) {
-		var provider orm.Provider
-		switch providerName {
-		case "facebook":
-			provider = &orm.FacebookAccount{}
-		}
-		userID, err = registration.UserID(provider, accountID)
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(500)
-			returnJSON(w, exception{Message: fmt.Sprintf("%sのアカウントid取得時にエラー%s", providerName, err.Error())})
-			return
-		}
-	} else { // 登録
-		userID, err = registration.Register(user.Name(), user.AvatarURL(), accountID, providerName, r.Context())
-		if err != nil {
-			log.Println(err)
-			w.WriteHeader(500)
-			returnJSON(w, exception{Message: "ユーザー登録時にエラー。しばらくお待ち下さい。" + err.Error()})
-			return
+	var provider orm.Provider
+	switch providerName {
+	case "facebook":
+		provider = &orm.FacebookAccount{
+			AccountId: accountID,
 		}
 	}
+
+	registered, err := registration.Registered(provider)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(500)
+		returnJSON(w, exception{Message: fmt.Sprintf("%sの登録確認時にエラー%s", providerName, err.Error())})
+		return
+	}
+
+	if registered {
+		userID, err = registration.UserID(provider)
+	} else { // 登録
+		userID, err = registration.Register(registration.RequiredItems{
+			UserName:  user.Name(),
+			AvatarURL: user.AvatarURL(),
+			Provider:  provider,
+			Ctx:       r.Context(),
+		})
+	}
+
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(500)
+		returnJSON(w, exception{Message: fmt.Sprintf("%sの認証時にエラー%s", providerName, err.Error())})
+		return
+	}
+
 	res := registration.Callback{
 		UserID: userID,
 	}

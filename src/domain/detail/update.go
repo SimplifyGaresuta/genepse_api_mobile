@@ -22,13 +22,13 @@ func UpdateUser(id uint, r io.ReadCloser) error {
 		return err
 	}
 	// TODO ガレスタ語は全SNSは認証にするから消す------
-	if len(user.Sns) >= 1 && user.Sns[0].Provider == "twitter" {
-		twID, err := updateSNS(user.Sns[0])
-		if err != nil {
-			return err
-		}
-		rawUser.TwitterAccountId = twID
-	}
+	//if len(user.Sns) >= 1 && user.Sns[0].Provider == "twitter" {
+	//	twID, err := updateSNS(user.Sns[0])
+	//	if err != nil {
+	//		return err
+	//	}
+	//	rawUser.TwitterAccountId = twID
+	//}
 	// ----------------------------------------
 
 	if err := rawUser.Update(id); err != nil {
@@ -48,6 +48,8 @@ func UpdateUser(id uint, r io.ReadCloser) error {
 	// ---------------------------------------------------------------------
 	return nil
 }
+
+/*
 func updateSNS(sns Sns) (providerID uint, err error) {
 	switch sns.Provider {
 	case "twitter":
@@ -63,6 +65,7 @@ func updateSNS(sns Sns) (providerID uint, err error) {
 		return
 	}
 }
+*/
 func decode(r io.ReadCloser) (*User, error) {
 	bytes, err := ioutil.ReadAll(r)
 	if err != nil {

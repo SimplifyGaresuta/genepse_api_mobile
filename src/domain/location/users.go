@@ -31,7 +31,7 @@ type Sns struct {
 }
 
 const query = `
-select distinct u.id, u.name, u.avatar_url, u.attribute_id, u.facebook_account_id, u.twitter_account_id
+select distinct u.id, u.name, u.avatar_url, u.attribute_id
 from users as u left join skill_users as s on u.id=s.user_id
 where u.id=? and (u.attribute_id != 0 and u.overview != "" and s.user_id is not null);`
 
@@ -73,7 +73,6 @@ func getUsers(con *redis.Conn, ids []string, userID string) (users []User, err e
 			continue
 		}
 
-		// TODO 必要カラムだけselect
 		rawUser := &orm.User{}
 		// 位置情報だけ残ってるけどユーザーが削除されている可能性があるから
 		if err = rawUser.RawQuery(query, i); err != nil {
@@ -94,7 +93,6 @@ func getUsers(con *redis.Conn, ids []string, userID string) (users []User, err e
 		if err != nil {
 			log.Println(err)
 		}
-		// TODO 表示項目決まり次第ここにマッピングする
 		user := User{
 			ID:        i,
 			Name:      rawUser.Name,
@@ -102,8 +100,7 @@ func getUsers(con *redis.Conn, ids []string, userID string) (users []User, err e
 			Attribute: domain.GetAttribute(rawUser.AttributeId),
 			Skills:    skillNames,
 			Distance:  distance,
-			// TODO 抽象化
-			Sns: []Sns{Sns{Provider: fb.ProviderName(), URL: fbURL}, Sns{Provider: tw.ProviderName(), URL: twURL}},
+			Sns:       []Sns{Sns{Provider: fb.ProviderName(), URL: fbURL}, Sns{Provider: tw.ProviderName(), URL: twURL}},
 		}
 		users = append(users, user)
 	}

@@ -2,7 +2,6 @@ package registration
 
 import (
 	"context"
-	"fmt"
 	"genepse_api/src/infra/objstorage"
 	"genepse_api/src/infra/orm"
 	"io"
@@ -17,57 +16,42 @@ type Callback struct {
 	UserID uint `json:"user_id"`
 }
 
-// TODO レコードごととらずに、存在確認のみする
-// TODO プロバイダー毎に処理書かずに抽象化したい
-func Registered(provider string, accountID string) bool {
-	switch provider {
-	case "facebook":
-		exists, _ := orm.ExistsFacebookBy("AccountId", accountID)
-		return exists
-	default:
-		// TODO エラーハンドリングする
-		return false
-	}
+// InputItems is 登録時に必要な項目
+type RequiredItems struct {
+	UserName  string
+	AvatarURL string
+	Provider  orm.Provider
+	Ctx       context.Context
+}
+
+func Registered(provider orm.Provider) (bool, error) {
+	return provider.Exists(provider.GetAccountID())
 }
 
 // Register はuserを登録します
-func Register(userName string, avatarURL string, accountID string, provider string, ctx context.Context) (userID uint, err error) {
-	var facebookID uint
-	// TODO 抽象化
-	switch provider {
-	case "facebook":
-		f := &orm.FacebookAccount{
-			AccountId: accountID,
-			MypageUrl: "https://www.facebook.com/" + accountID,
-		}
-		err = f.Insert()
-		if err != nil {
-			return
-		}
-		facebookID = f.Model.ID
+func Register(items RequiredItems) (userID uint, err error) {
+	items.AvatarURL = items.Provider.NewAvatarURL()
 
-		avatarURL = fmt.Sprintf("https://graph.facebook.com/%s/picture?width=9999", accountID)
-	}
-	// ダウンロード
-	r, err := downloadImage(avatarURL)
+	r, err := downloadImage(items.AvatarURL)
 	if err != nil {
 		return
 	}
-	avatarURL, err = uploadImage(r, ctx)
-	if err != nil {
+	if items.AvatarURL, err = uploadImage(r, items.Ctx); err != nil {
 		return
 	}
 
 	u := &orm.User{
-		Name:              userName,
-		AvatarUrl:         avatarURL,
-		FacebookAccountId: facebookID,
+		Name:      items.UserName,
+		AvatarUrl: items.AvatarURL,
 	}
-	err = u.Insert()
-	if err != nil {
+	if err = u.Insert(); err != nil {
 		return
 	}
 	userID = u.Model.ID
+
+	items.Provider.SetMyPageURL()
+	items.Provider.SetUserID(userID)
+	err = items.Provider.Insert()
 	return
 }
 
@@ -87,13 +71,13 @@ func uploadImage(r io.ReadCloser, ctx context.Context) (imageURL string, err err
 	return
 }
 
-func UserID(provider orm.Provider, accountID string) (userID uint, err error) {
-	err = provider.FindBy("AccountId", accountID)
+func UserID(provider orm.Provider) (userID uint, err error) {
+	err = provider.Find(provider.GetAccountID())
 	if err != nil {
 		return
 	}
 	user := orm.User{}
-	err = user.FindByProvider(provider, provider.GetID())
+	err = user.FindByProvider(provider)
 	if err != nil {
 		return
 	}

@@ -1,7 +1,6 @@
 package detail
 
 import (
-	"errors"
 	"genepse_api/src/domain"
 	"genepse_api/src/infra/orm"
 	"log"
@@ -101,25 +100,6 @@ func getProducts(userID int) (products []Product, err error) {
 	for _, p := range rawProducts {
 		products = append(products, Product{ID: p.Model.ID, Title: p.Title, URL: p.ReferenceUrl, Image: p.ImageUrl})
 	}
-	return
-}
-
-// TODO providerで抽象化
-func getFacebookURL(userID int) (url string, err error) {
-	user := &orm.User{}
-	if err = user.Find(userID); err != nil {
-		return
-	}
-	fbID := user.FacebookAccountId
-	if fbID == 0 {
-		err = errors.New("facebookが登録されていません")
-		return
-	}
-	fb := &orm.FacebookAccount{}
-	if err = fb.Find(int(fbID)); err != nil {
-		return
-	}
-	url = fb.MypageUrl
 	return
 }
 

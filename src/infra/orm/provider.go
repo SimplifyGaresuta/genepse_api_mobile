@@ -1,10 +1,24 @@
 package orm
 
 type Provider interface {
-	GetID() uint
-	Find(int) (err error)
-	FindBy(string, interface{}) error
+	Insert() (err error)
+
+	Find(string) (err error)
+
 	ProviderName() string
+
 	GetAccountID() string
+
 	GetMypageURL() string
+
+	// Exists はプライマリーキーを渡し、レコードが存在するか確認します
+	Exists(string) (bool, error)
+
+	// NewAvatarURL はアバターurlを取得します
+	NewAvatarURL() string
+
+	// SetMyPageURL はmypageurlを生成します
+	SetMyPageURL()
+
+	SetUserID(uint)
 }

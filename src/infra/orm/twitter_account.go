@@ -1,14 +1,8 @@
 package orm
 
-import (
-	"errors"
-
-	"github.com/jinzhu/gorm"
-)
-
 type TwitterAccount struct {
-	gorm.Model
-	AccountId string `gorm:"size:100;unique"`
+	AccountId string `gorm:"primary_key; size:100; not null; default:''"`
+	UserId    uint   `gorm:"type:bigint;not null"`
 	MypageUrl string `gorm:"size:300;not null"`
 }
 
@@ -17,26 +11,8 @@ func (t *TwitterAccount) Insert() (err error) {
 	return
 }
 
-func (t *TwitterAccount) Find(id int) (err error) {
-	return db.First(t, id).Error
-}
-
-func (t *TwitterAccount) FindBy(column string, value interface{}) error {
-	switch column {
-	case "AccountId":
-		if v, ok := value.(string); ok {
-			db.Where("account_id = ?", v).First(t)
-			return nil
-		} else {
-			return errors.New("AccountIdにはstring型の値を渡して下さい。")
-		}
-	default:
-		return errors.New("カラム名が違います。")
-	}
-}
-
-func (t *TwitterAccount) GetID() uint {
-	return t.Model.ID
+func (t *TwitterAccount) Find(accountID string) (err error) {
+	return db.Where("account_id = ?", accountID).First(t).Error
 }
 
 func (t *TwitterAccount) GetAccountID() string {
@@ -49,4 +25,27 @@ func (t *TwitterAccount) GetMypageURL() string {
 
 func (t *TwitterAccount) ProviderName() string {
 	return "twitter"
+}
+
+func (t *TwitterAccount) Exists(accountID string) (bool, error) {
+	query := "SELECT EXISTS(SELECT * FROM twitter_accounts WHERE account_id=?)"
+	if err := db.Raw(query, accountID).Scan(t).Error; err != nil {
+		return false, err
+	}
+	return accountID == t.AccountId, nil
+}
+
+// TODO 実装する
+func (t *TwitterAccount) NewAvatarURL() string {
+	return ""
+}
+
+func (t *TwitterAccount) SetMyPageURL() {
+	t.MypageUrl = "https://twitter.com/" + t.AccountId
+	return
+}
+
+func (t *TwitterAccount) SetUserID(id uint) {
+	t.UserId = id
+	return
 }
