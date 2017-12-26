@@ -12,7 +12,7 @@ type Provider interface {
 	GetMypageURL() string
 
 	// Exists はプライマリーキーを渡し、レコードが存在するか確認します
-	Exists(string) (bool, error)
+	Exists(string) bool
 
 	// NewAvatarURL はアバターurlを取得します
 	NewAvatarURL() string

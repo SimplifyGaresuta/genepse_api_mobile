@@ -249,15 +249,7 @@ func callback(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		}
 	}
 
-	registered, err := registration.Registered(provider)
-	if err != nil {
-		log.Println(err)
-		w.WriteHeader(500)
-		returnJSON(w, exception{Message: fmt.Sprintf("%sの登録確認時にエラー%s", providerName, err.Error())})
-		return
-	}
-
-	if registered {
+	if registration.Registered(provider) {
 		userID, err = registration.UserID(provider)
 	} else { // 登録
 		userID, err = registration.Register(registration.RequiredItems{

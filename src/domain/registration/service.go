@@ -6,6 +6,7 @@ import (
 	"genepse_api/src/infra/orm"
 	"io"
 	"net/http"
+	"os"
 )
 
 type Login struct {
@@ -24,7 +25,9 @@ type RequiredItems struct {
 	Ctx       context.Context
 }
 
-func Registered(provider orm.Provider) (bool, error) {
+var isProduction = os.Getenv("DEV") != "1"
+
+func Registered(provider orm.Provider) bool {
 	return provider.Exists(provider.GetAccountID())
 }
 
@@ -32,12 +35,16 @@ func Registered(provider orm.Provider) (bool, error) {
 func Register(items RequiredItems) (userID uint, err error) {
 	items.AvatarURL = items.Provider.NewAvatarURL()
 
-	r, err := downloadImage(items.AvatarURL)
-	if err != nil {
-		return
-	}
-	if items.AvatarURL, err = uploadImage(r, items.Ctx); err != nil {
-		return
+	var r io.ReadCloser
+	if isProduction {
+		r, err = downloadImage(items.AvatarURL)
+		if err != nil {
+			return
+		}
+		items.AvatarURL, err = uploadImage(r, items.Ctx)
+		if err != nil {
+			return
+		}
 	}
 
 	u := &orm.User{

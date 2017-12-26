@@ -33,7 +33,7 @@ func (u *User) Find(id int) (err error) {
 }
 
 func (u *User) FindByProvider(provider Provider) error {
-	return db.Debug().Model(&provider).Related(u).Error
+	return db.Debug().Model(provider).Related(u).Error
 }
 
 func (u *User) Update(id uint) error {

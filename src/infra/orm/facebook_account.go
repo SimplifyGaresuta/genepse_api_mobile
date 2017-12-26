@@ -10,12 +10,11 @@ type FacebookAccount struct {
 	MypageUrl string `gorm:"size:300;not null"`
 }
 
-func (f *FacebookAccount) Insert() (err error) {
-	err = db.Create(f).Error
-	return
+func (f *FacebookAccount) Insert() error {
+	return db.Create(f).Error
 }
 
-func (f *FacebookAccount) Find(accountID string) (err error) {
+func (f *FacebookAccount) Find(accountID string) error {
 	return db.Where("account_id = ?", accountID).First(f).Error
 }
 
@@ -31,12 +30,10 @@ func (f *FacebookAccount) ProviderName() string {
 	return "facebook"
 }
 
-func (f *FacebookAccount) Exists(accountID string) (bool, error) {
-	query := "SELECT EXISTS(SELECT * FROM facebook_accounts WHERE account_id=?)"
-	if err := db.Raw(query, accountID).Scan(f).Error; err != nil {
-		return false, err
-	}
-	return accountID == f.AccountId, nil
+func (f *FacebookAccount) Exists(accountID string) bool {
+	result := struct{ IsExists bool }{}
+	db.Raw("SELECT EXISTS(SELECT * FROM facebook_accounts WHERE account_id=?) as is_exists;", accountID).Scan(&result)
+	return result.IsExists
 }
 
 func (f *FacebookAccount) NewAvatarURL() string {

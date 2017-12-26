@@ -27,12 +27,10 @@ func (t *TwitterAccount) ProviderName() string {
 	return "twitter"
 }
 
-func (t *TwitterAccount) Exists(accountID string) (bool, error) {
-	query := "SELECT EXISTS(SELECT * FROM twitter_accounts WHERE account_id=?)"
-	if err := db.Raw(query, accountID).Scan(t).Error; err != nil {
-		return false, err
-	}
-	return accountID == t.AccountId, nil
+func (t *TwitterAccount) Exists(accountID string) bool {
+	result := struct{ IsExists bool }{}
+	db.Raw("SELECT EXISTS(SELECT * FROM twitter_accounts WHERE account_id=?) as is_exists;", accountID).Scan(&result)
+	return result.IsExists
 }
 
 // TODO 実装する
