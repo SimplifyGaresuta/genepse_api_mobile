@@ -14,4 +14,4 @@ readiness_check:
 beta_settings:
   cloud_sql_instances: "genepse-186713:asia-northeast1:genepse"
 env_variables:
-  GENEPSE_MYSQL_CONNECTION: root:tsuba2896@unix(/cloudsql/genepse-186713:asia-northeast1:genepse)/mobile_api?charset=utf8&parseTime=True&loc=Local
+  GENEPSE_MYSQL_CONNECTION: root:hogehoge@unix(/cloudsql/genepse-186713:asia-northeast1:genepse)/mobile_api?charset=utf8&parseTime=True&loc=Local
